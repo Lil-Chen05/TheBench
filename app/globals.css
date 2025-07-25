@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -65,4 +67,31 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fade-in {
+  animation: fade-in 1s ease-in;
+}
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 1s cubic-bezier(0.4,0,0.2,1);
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-up {
+  animation: slide-up 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.pixelated-text {
+  font-family: 'Press Start 2P', 'Geist', 'monospace';
+  letter-spacing: 0.05em;
+  text-shadow: 2px 2px 0 #000, 4px 4px 0 #F4D03F;
 }
