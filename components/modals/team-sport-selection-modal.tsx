@@ -55,6 +55,22 @@ export default function TeamSportSelectionModal({
   const [validationError, setValidationError] = useState("");
   const supabase = createClient();
 
+  const loadTeams = useCallback(async () => {
+    try {
+      const { data, error } = await supabase
+        .from('basketballteams')
+        .select('*')
+        .order('team_name');
+      
+      if (error) throw error;
+      setTeams(data || []);
+      setFilteredTeams(data || []);
+    } catch (error) {
+      console.error('Error loading teams:', error);
+      setMessage('Error loading teams');
+    }
+  }, [supabase]);
+
   // Load teams on mount
   useEffect(() => {
     if (isOpen) {
@@ -83,22 +99,6 @@ export default function TeamSportSelectionModal({
       setSelectedSports(userProfile.favorite_sports || []);
     }
   }, [userProfile]);
-
-  const loadTeams = useCallback(async () => {
-    try {
-      const { data, error } = await supabase
-        .from('basketballteams')
-        .select('*')
-        .order('team_name');
-      
-      if (error) throw error;
-      setTeams(data || []);
-      setFilteredTeams(data || []);
-    } catch (error) {
-      console.error('Error loading teams:', error);
-      setMessage('Error loading teams');
-    }
-  }, [supabase]);
 
   const handleTeamToggle = (teamId: string) => {
     setSelectedTeams(prev => {
