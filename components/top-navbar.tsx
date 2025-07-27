@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { AuthButton } from "@/components/auth-button";
 import { usePathname } from "next/navigation";
+import ParlayCartBadge from "@/components/parlay/parlay-cart-badge";
 
 export default function TopNavbar() {
   const pathname = usePathname();
@@ -17,8 +18,9 @@ export default function TopNavbar() {
         <Link href="/news" className={`font-bold text-white px-3 py-1 rounded hover:bg-[#F4D03F] hover:text-black transition ${pathname === "/news" ? "bg-[#F4D03F] text-black" : ""}`}>News</Link>
         <Link href="/contact" className={`font-bold text-white px-3 py-1 rounded hover:bg-[#F4D03F] hover:text-black transition ${pathname === "/contact" ? "bg-[#F4D03F] text-black" : ""}`}>Contact</Link>
       </div>
-      {/* Right: Auth/User */}
+      {/* Right: Cart and Auth/User */}
       <div className="flex items-center gap-4">
+        <ParlayCartBadge />
         <AuthButton />
       </div>
     </nav>

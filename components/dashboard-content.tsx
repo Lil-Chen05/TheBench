@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { InfoIcon } from "lucide-react";
 import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
 import TeamSportSelectionModal from "@/components/modals/team-sport-selection-modal";
+import { useParlayCart } from "@/components/parlay/parlay-context";
 import type { User } from "@supabase/supabase-js";
 
 interface UserProfile {
@@ -25,13 +26,12 @@ export default function DashboardContent({ user, profile }: DashboardContentProp
   const [currentProfile, setCurrentProfile] = useState<UserProfile | null>(profile);
   const [showModal, setShowModal] = useState(false);
   const supabase = createClient();
+  const { isDashboardShrunk } = useParlayCart();
 
-  // Check if user needs to select favorites
   const needsFavorites = currentProfile && 
     (!currentProfile.favorite_teams || currentProfile.favorite_teams.length === 0) && 
     (!currentProfile.favorite_sports || currentProfile.favorite_sports.length === 0);
 
-  // Show modal if user needs to select favorites
   useEffect(() => {
     if (needsFavorites) {
       setShowModal(true);
@@ -56,28 +56,57 @@ export default function DashboardContent({ user, profile }: DashboardContentProp
 
   return (
     <div className="min-h-screen bg-white">
-      <main className="ml-[50px] mt-[60px] flex flex-col gap-12 p-10">
-        <div className="w-full">
-          <div className="bg-black text-white text-sm p-3 px-5 rounded-md border border-black flex gap-3 items-center">
-            <InfoIcon size="16" strokeWidth={2} className="text-[#F4D03F]" />
-            This is a protected page that you can only see as an authenticated user
-          </div>
+      <main 
+        className={cn(
+          "ml-[50px] mt-[60px] flex flex-col gap-12 p-10 transition-all duration-300 ease-in-out",
+          isDashboardShrunk 
+            ? "mr-[400px] lg:mr-[450px] xl:mr-[500px]" 
+            : "mr-0"
+        )}
+      >
+        <div className="bg-black text-[#F4D03F] text-2xl font-black p-4 rounded border border-black mb-2">
+          Dashboard
         </div>
-        <div className="flex flex-col gap-2 items-start">
-          <div className="bg-black text-[#F4D03F] text-2xl font-black p-4 rounded border border-black mb-2">Your user details</div>
-          <pre className="text-xs text-white bg-black p-3 rounded border border-black max-h-32 overflow-auto">
-            {JSON.stringify(user, null, 2)}
-          </pre>
-        </div>
-        <div>
-          <div className="bg-black text-[#F4D03F] text-2xl font-black p-4 rounded border border-black mb-2">Next steps</div>
+
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <div className="bg-black text-white p-4 rounded border border-black">
-            <FetchDataSteps />
+            <h3 className="text-lg font-bold mb-2">Welcome Back!</h3>
+            <p className="text-gray-300 text-sm">Ready to make some picks?</p>
+          </div>
+          
+          <div className="bg-black text-white p-4 rounded border border-black">
+            <h3 className="text-lg font-bold mb-2">Balance</h3>
+            <p className="text-[#F4D03F] text-xl font-bold">${currentProfile?.balance || 0}</p>
+          </div>
+          
+          <div className="bg-black text-white p-4 rounded border border-black">
+            <h3 className="text-lg font-bold mb-2">Favorite Teams</h3>
+            <p className="text-gray-300 text-sm">
+              {currentProfile?.favorite_teams?.length || 0} teams selected
+            </p>
+          </div>
+          
+          <div className="bg-black text-white p-4 rounded border border-black">
+            <h3 className="text-lg font-bold mb-2">Favorite Sports</h3>
+            <p className="text-gray-300 text-sm">
+              {currentProfile?.favorite_sports?.length || 0} sports selected
+            </p>
           </div>
         </div>
+
+        <div className="bg-black text-white p-6 rounded border border-black">
+          <div className="flex items-center gap-2 mb-4">
+            <InfoIcon className="w-5 h-5 text-[#F4D03F]" />
+            <h3 className="text-lg font-bold">Getting Started</h3>
+          </div>
+          <FetchDataSteps />
+        </div>
+
+        <pre className="text-xs text-white bg-black p-3 rounded border border-black max-h-32 overflow-auto">
+          {JSON.stringify(user, null, 2)}
+        </pre>
       </main>
 
-      {/* Team Sport Selection Modal */}
       {showModal && (
         <TeamSportSelectionModal
           isOpen={showModal}
@@ -88,4 +117,8 @@ export default function DashboardContent({ user, profile }: DashboardContentProp
       )}
     </div>
   );
+}
+
+function cn(...classes: (string | undefined | null | false)[]): string {
+  return classes.filter(Boolean).join(' ');
 } 

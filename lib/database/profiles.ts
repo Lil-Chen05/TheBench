@@ -33,7 +33,7 @@ export async function createUserProfile(userId: string): Promise<UserProfile | n
       id: userId,
       favorite_teams: [],
       favorite_sports: [],
-      balance: 0.00
+      balance: 1000
     })
     .select()
     .single();
@@ -100,6 +100,22 @@ export async function updateBalance(userId: string, balance: number): Promise<bo
   return true;
 }
 
+export async function getBalanceOnly(userId: string): Promise<number | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('balance')
+    .eq('id', userId)
+    .single();
+  
+  if (error) {
+    console.error('Error fetching user balance:', error);
+    return null;
+  }
+  
+  return data?.balance || 0;
+}
+
 export async function getUserProfileOrCreate(userId: string): Promise<UserProfile | null> {
   let profile = await getUserProfile(userId);
   
@@ -140,4 +156,56 @@ export async function removeFavoriteTeam(userId: string, teamId: string): Promis
   const currentFavorites = profile.favorite_teams || [];
   const updatedFavorites = currentFavorites.filter(id => id !== teamId);
   return await updateFavoriteTeams(userId, updatedFavorites);
+}
+
+// Balance management functions
+export async function getUserBalance(userId: string): Promise<number> {
+  const balance = await getBalanceOnly(userId);
+  return balance || 0;
+}
+
+export async function updateUserBalance(userId: string, amount: number): Promise<boolean> {
+  const supabase = await createClient();
+  
+  try {
+    // Use the database function for safe balance updates
+    const { data, error } = await supabase
+      .rpc('update_user_balance', {
+        user_id: userId,
+        amount_change: amount
+      });
+    
+    if (error) {
+      console.error('Error updating user balance:', error);
+      return false;
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('Error in updateUserBalance:', error);
+    return false;
+  }
+}
+
+export async function addCreditsToUser(userId: string, amount: number): Promise<boolean> {
+  if (amount <= 0) {
+    console.error('Cannot add negative or zero credits');
+    return false;
+  }
+  
+  return await updateUserBalance(userId, amount);
+}
+
+export async function deductCreditsFromUser(userId: string, amount: number): Promise<boolean> {
+  if (amount <= 0) {
+    console.error('Cannot deduct negative or zero credits');
+    return false;
+  }
+  
+  return await updateUserBalance(userId, -amount);
+}
+
+export async function checkUserBalance(userId: string, requiredAmount: number): Promise<boolean> {
+  const currentBalance = await getUserBalance(userId);
+  return currentBalance >= requiredAmount;
 } 
