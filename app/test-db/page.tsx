@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -51,7 +51,7 @@ export default function TestDatabasePage() {
       }
     };
     getUser();
-  }, [supabase.auth]);
+  }, [supabase.auth, loadUserProfile]);
 
   // Load all teams
   const loadTeams = async () => {
@@ -80,7 +80,7 @@ export default function TestDatabasePage() {
   };
 
   // Load user profile
-  const loadUserProfile = async (userId: string) => {
+  const loadUserProfile = useCallback(async (userId: string) => {
     try {
       console.log('Loading profile for user:', userId);
       const { data, error } = await supabase
@@ -108,7 +108,7 @@ export default function TestDatabasePage() {
         String(error);
       setMessage(`Error loading profile: ${errorMessage}`);
     }
-  };
+  }, [supabase]);
 
   // Add favorite team
   const addFavoriteTeam = async (teamId: string) => {

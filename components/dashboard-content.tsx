@@ -43,7 +43,7 @@ export default function DashboardContent({ user, profile }: DashboardContentProp
       const { data: profileData } = await supabase
         .from('profiles')
         .select('*')
-        .eq('id', user.sub)
+        .eq('id', user.id)
         .single();
       setCurrentProfile(profileData);
       setShowModal(false);
