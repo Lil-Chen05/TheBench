@@ -40,7 +40,7 @@ export default function Home() {
             <CardContent className="p-8">
               <h2 className="text-3xl md:text-4xl font-black mb-4 text-yellow-400 uppercase tracking-wider">Our Story</h2>
               <p className="text-lg md:text-xl font-medium leading-relaxed">
-                In every game, there's more happening than what we see on the court or field. <span className="font-extrabold text-yellow-400">The Bench</span> is where the next breakout moment brews. It's where energy builds, where teammates support, where stories begin. Our platform gives fans and students a chance to step off The Bench and into the action—whether they're making picks, competing in fantasy leagues, or repping their school pride. Just like real players fighting for their shot, our users aren't bystanders—they're active participants in the game.
+                In every game, there&apos;s more happening than what we see on the court or field. <span className="font-extrabold text-yellow-400">The Bench</span> is where the next breakout moment brews. It&apos;s where energy builds, where teammates support, where stories begin. Our platform gives fans and students a chance to step off The Bench and into the action—whether they&apos;re making picks, competing in fantasy leagues, or repping their school pride. Just like real players fighting for their shot, our users aren&apos;t bystanders—they&apos;re active participants in the game.
               </p>
             </CardContent>
           </Card>
@@ -54,7 +54,7 @@ export default function Home() {
             <CardContent className="p-8">
               <h2 className="text-3xl md:text-4xl font-black mb-4 uppercase tracking-wider">Behind The Name</h2>
               <p className="text-lg md:text-xl font-medium leading-relaxed">
-                The line <span className="font-extrabold">'No one rides the bench here'</span> flips a historically negative sports phrase into a call to action. It's a name that invites everyone into the game — especially powerful on campuses where students may feel on the outside of varsity athletics. It gives you long-term content storytelling potential: underdog stories, rising talent, fan engagement, 'next man up' culture. Scalability: Works beyond fantasy sports — merch, interviews, media, athlete collabs, etc.
+                The line <span className="font-extrabold">&apos;No one rides the bench here&apos;</span> flips a historically negative sports phrase into a call to action. It&apos;s a name that invites everyone into the game — especially powerful on campuses where students may feel on the outside of varsity athletics. It gives you long-term content storytelling potential: underdog stories, rising talent, fan engagement, &apos;next man up&apos; culture. Scalability: Works beyond fantasy sports — merch, interviews, media, athlete collabs, etc.
               </p>
             </CardContent>
           </Card>

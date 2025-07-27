@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { InfoIcon } from "lucide-react";
 import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
 import TeamSportSelectionModal from "@/components/modals/team-sport-selection-modal";
+import type { User } from "@supabase/supabase-js";
 
 interface UserProfile {
   id: string;
@@ -16,7 +17,7 @@ interface UserProfile {
 }
 
 interface DashboardContentProps {
-  user: any;
+  user: User;
   profile: UserProfile | null;
 }
 

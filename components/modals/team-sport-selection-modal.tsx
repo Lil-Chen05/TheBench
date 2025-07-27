@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -60,7 +60,7 @@ export default function TeamSportSelectionModal({
     if (isOpen) {
       loadTeams();
     }
-  }, [isOpen]);
+  }, [isOpen, loadTeams]);
 
   // Filter teams based on search term
   useEffect(() => {
@@ -84,7 +84,7 @@ export default function TeamSportSelectionModal({
     }
   }, [userProfile]);
 
-  const loadTeams = async () => {
+  const loadTeams = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('basketballteams')
@@ -98,7 +98,7 @@ export default function TeamSportSelectionModal({
       console.error('Error loading teams:', error);
       setMessage('Error loading teams');
     }
-  };
+  }, [supabase]);
 
   const handleTeamToggle = (teamId: string) => {
     setSelectedTeams(prev => {
@@ -276,7 +276,7 @@ export default function TeamSportSelectionModal({
               <div>
                 <div className="mb-6">
                   <h3 className="text-lg font-bold text-white mb-2">Select Your Favorite Sports</h3>
-                  <p className="text-gray-300 mb-4">Choose 1-3 sports you're interested in</p>
+                  <p className="text-gray-300 mb-4">Choose 1-3 sports you&apos;re interested in</p>
                   
                   {/* Selected Teams Summary */}
                   <div className="mb-4 p-3 bg-gray-800 rounded border border-gray-600">

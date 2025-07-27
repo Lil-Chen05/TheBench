@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { User } from "@supabase/supabase-js";
 
 interface BasketballTeam {
   id: number;
@@ -27,7 +28,7 @@ export default function TestDatabasePage() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const supabase = createClient();
 
   // Get current user
@@ -50,7 +51,7 @@ export default function TestDatabasePage() {
       }
     };
     getUser();
-  }, []);
+  }, [supabase.auth]);
 
   // Load all teams
   const loadTeams = async () => {
