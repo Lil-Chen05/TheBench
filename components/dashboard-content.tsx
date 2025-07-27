@@ -7,6 +7,7 @@ import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
 import TeamSportSelectionModal from "@/components/modals/team-sport-selection-modal";
 import { useParlayCart } from "@/components/parlay/parlay-context";
 import type { User } from "@supabase/supabase-js";
+import { cn } from "@/lib/utils";
 
 interface UserProfile {
   id: string;
@@ -25,8 +26,8 @@ interface DashboardContentProps {
 export default function DashboardContent({ user, profile }: DashboardContentProps) {
   const [currentProfile, setCurrentProfile] = useState<UserProfile | null>(profile);
   const [showModal, setShowModal] = useState(false);
-  const supabase = createClient();
   const { isDashboardShrunk } = useParlayCart();
+  const supabase = createClient();
 
   const needsFavorites = currentProfile && 
     (!currentProfile.favorite_teams || currentProfile.favorite_teams.length === 0) && 
@@ -117,8 +118,4 @@ export default function DashboardContent({ user, profile }: DashboardContentProp
       )}
     </div>
   );
-}
-
-function cn(...classes: (string | undefined | null | false)[]): string {
-  return classes.filter(Boolean).join(' ');
 } 

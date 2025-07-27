@@ -6,11 +6,11 @@ import TopNavbar from "@/components/top-navbar";
 import Sidebar from "@/components/sidebar";
 import PopularPicks from "@/components/basketball/popular-picks";
 import FavoritePicks from "@/components/basketball/favorite-picks";
-import { ParlayCartProvider } from "@/components/parlay/parlay-context";
+import { ParlayCartProvider, useParlayCart } from "@/components/parlay/parlay-context";
 import { ToastProvider } from "@/components/ui/toast";
 import ParlayCart from "@/components/parlay/parlay-cart";
 import { useRouter } from "next/navigation";
-import { useParlayCart } from "@/components/parlay/parlay-context";
+import { cn } from "@/lib/utils";
 
 interface UserProfile {
   id: string;
@@ -25,9 +25,9 @@ function BasketballContent() {
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const { isDashboardShrunk } = useParlayCart();
   const router = useRouter();
   const supabase = createClient();
-  const { isDashboardShrunk } = useParlayCart();
 
   useEffect(() => {
     const getUserData = async () => {
@@ -110,8 +110,4 @@ export default function BasketballPage() {
       </ParlayCartProvider>
     </ToastProvider>
   );
-}
-
-function cn(...classes: (string | undefined | null | false)[]): string {
-  return classes.filter(Boolean).join(' ');
 } 

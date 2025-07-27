@@ -1,8 +1,35 @@
+"use client";
+
 import { AuthButton } from "@/components/auth-button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Trophy } from "lucide-react";
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import Link from "next/link";
 
 export default function Home() {
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const supabase = createClient();
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+      setLoading(false);
+    };
+
+    getUser();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [supabase]);
+
   return (
     <main className="min-h-screen flex flex-col items-center bg-black">
       {/* HEADER */}
@@ -24,13 +51,29 @@ export default function Home() {
       </nav>
 
       {/* HERO SECTION */}
-      <section className="w-full flex flex-col items-center justify-center py-24 bg-yellow-400 animate-fade-in">
+      <section className="w-full flex flex-col items-center justify-center py-24 bg-yellow-400 animate-fade-in relative">
         <h1 className="text-6xl md:text-8xl font-black tracking-tight text-black drop-shadow-lg mb-4 font-mono uppercase pixelated-text">
           THE BENCH
         </h1>
-        <p className="text-2xl md:text-3xl font-extrabold text-black tracking-wide text-center mb-2 animate-slide-up">
+        <p className="text-2xl md:text-3xl font-extrabold text-black tracking-wide text-center mb-8 animate-slide-up">
           NO ONE RIDES THE BENCH HERE
         </p>
+        
+        {/* Dashboard Access Button for Logged-in Users */}
+        {!loading && user && (
+          <div className="animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
+            <Link href="/dashboard">
+              <Button className="bg-black text-yellow-400 hover:bg-gray-900 hover:text-yellow-300 font-bold text-lg px-8 py-4 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 border-2 border-black hover:border-yellow-400 group">
+                <Trophy className="w-6 h-6 mr-3 group-hover:rotate-12 transition-transform duration-300" />
+                Go to Dashboard
+                <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform duration-300" />
+              </Button>
+            </Link>
+            <p className="text-black/70 text-center mt-4 font-medium">
+              Welcome back! Ready to make some picks?
+            </p>
+          </div>
+        )}
       </section>
 
       {/* OUR STORY SECTION */}

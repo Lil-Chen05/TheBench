@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { X, Trash2, DollarSign, AlertCircle } from "lucide-react";
 import { useParlayCart } from "./parlay-context";
 import { useToast } from "@/components/ui/toast";
+import { cn } from "@/lib/utils";
 
 export default function ParlayCart() {
   const {
@@ -25,7 +25,6 @@ export default function ParlayCart() {
     canPlaceParlay,
     getValidationMessage,
   } = useParlayCart();
-
   const { showToast } = useToast();
   const [isPlacingParlay, setIsPlacingParlay] = useState(false);
 
@@ -34,45 +33,40 @@ export default function ParlayCart() {
       showToast(getValidationMessage(), "error");
       return;
     }
-
     setIsPlacingParlay(true);
-    
-    // Mock parlay placement - simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    // Show success message
+    await new Promise(resolve => setTimeout(resolve, 1500)); // Mock API call
     showToast("Parlay placed successfully! Good luck!", "success");
-    
-    // Clear cart
     clearCart();
     setIsPlacingParlay(false);
-  };
-
-  const formatOdds = (odds: number): string => {
-    if (odds > 0) {
-      return `+${odds}`;
-    }
-    return odds.toString();
-  };
-
-  const formatPickDescription = (pick: any): string => {
-    const direction = pick.pickType === 'over' ? 'Over' : 'Under';
-    return `${direction} ${pick.predictedValue} ${pick.propType}`;
   };
 
   const validationMessage = getValidationMessage();
   const canPlace = canPlaceParlay();
 
+  const formatPickDescription = (pick: any) => {
+    const direction = pick.pickType === 'over' ? '↑' : '↓';
+    return `${direction} ${pick.predictedValue} ${pick.propType}`;
+  };
+
+  const formatOdds = (odds: number) => {
+    return odds > 0 ? `+${odds}` : `${odds}`;
+  };
+
   return (
-    <Sheet open={isCartOpen} onOpenChange={closeCart}>
-      <SheetContent className="w-[400px] lg:w-[450px] xl:w-[500px] bg-black text-white border-l border-gray-700">
-        <SheetHeader className="border-b border-gray-700 pb-4">
+    <div
+      className={cn(
+        "fixed top-[60px] right-0 h-[calc(100vh-60px)] w-[400px] lg:w-[450px] xl:w-[500px] bg-black text-white border-l border-gray-700 shadow-2xl transition-transform duration-300 ease-in-out z-40",
+        isCartOpen ? "translate-x-0" : "translate-x-full"
+      )}
+    >
+      <div className="flex flex-col h-full">
+        {/* Header */}
+        <div className="border-b border-gray-700 p-4">
           <div className="flex items-center justify-between">
-            <SheetTitle className="text-white text-xl font-bold">
+            <h2 className="text-white text-xl font-bold">
               My Parlay ({getPickCount()}/5)
-            </SheetTitle>
+            </h2>
             <Badge 
-              variant="secondary" 
               className={cn(
                 "font-bold",
                 getPickCount() >= 2 ? "bg-green-600 text-white" : "bg-[#F4D03F] text-black"
@@ -81,30 +75,33 @@ export default function ParlayCart() {
               {getPickCount() >= 2 ? "Ready" : "Add More"}
             </Badge>
           </div>
-        </SheetHeader>
+        </div>
 
-        <div className="flex flex-col h-full">
-          {/* Validation Message */}
-          {validationMessage && (
-            <div className="mt-4 p-3 bg-yellow-900/20 border border-yellow-700/50 rounded-lg">
-              <div className="flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 text-yellow-400" />
-                <span className="text-yellow-300 text-sm font-medium">
-                  {validationMessage}
-                </span>
-              </div>
+        {/* Validation Message */}
+        {validationMessage && (
+          <div className="p-4 bg-yellow-900/20 border-b border-yellow-700/50">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-yellow-400" />
+              <span className="text-yellow-300 text-sm font-medium">
+                {validationMessage}
+              </span>
             </div>
-          )}
+          </div>
+        )}
 
+        {/* Content */}
+        <div className="flex flex-col h-full">
           {/* Picks List */}
-          <div className="flex-1 overflow-y-auto py-4">
+          <div className="flex-1 overflow-y-auto p-4">
             {picks.length === 0 ? (
               <div className="text-center py-12">
                 <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
                   <DollarSign className="w-8 h-8 text-gray-400" />
                 </div>
                 <p className="text-gray-400 mb-2 font-medium">No picks added yet</p>
-                <p className="text-gray-500 text-sm">Add picks from the betting cards to build your parlay</p>
+                <p className="text-gray-500 text-sm">
+                  Add picks from the betting cards to build your parlay
+                </p>
               </div>
             ) : (
               <div className="space-y-3">
@@ -125,9 +122,7 @@ export default function ParlayCart() {
                               #{index + 1}
                             </Badge>
                           </div>
-                          <p className="text-gray-400 text-xs mb-2">
-                            {pick.teamName}
-                          </p>
+                          <p className="text-gray-400 text-xs mb-2">{pick.teamName}</p>
                           <div className="flex items-center gap-2">
                             <span className="text-[#F4D03F] font-bold text-sm">
                               {formatPickDescription(pick)}
@@ -138,8 +133,6 @@ export default function ParlayCart() {
                           </div>
                         </div>
                         <Button
-                          variant="ghost"
-                          size="sm"
                           onClick={() => removeFromCart(pick.id)}
                           className="text-gray-400 hover:text-red-400 hover:bg-red-400/10 p-1 transition-colors"
                           aria-label="Remove pick"
@@ -154,9 +147,9 @@ export default function ParlayCart() {
             )}
           </div>
 
-          {/* Betting Controls */}
+          {/* Footer - Betting Controls */}
           {picks.length > 0 && (
-            <div className="border-t border-gray-700 pt-4 space-y-4">
+            <div className="border-t border-gray-700 p-4 space-y-4">
               {/* Total Odds */}
               <div className="flex justify-between items-center p-3 bg-gray-800/50 rounded-lg">
                 <span className="text-gray-300 font-medium">Total Odds:</span>
@@ -165,7 +158,7 @@ export default function ParlayCart() {
                 </span>
               </div>
 
-              {/* Bet Amount Input */}
+              {/* Bet Amount */}
               <div className="space-y-2">
                 <label className="text-gray-300 text-sm font-medium">
                   Bet Amount (Credits)
@@ -182,9 +175,7 @@ export default function ParlayCart() {
                     placeholder="10"
                   />
                 </div>
-                <p className="text-gray-500 text-xs">
-                  Min: $10 | Max: $1000
-                </p>
+                <p className="text-gray-500 text-xs">Min: $10 | Max: $1000</p>
               </div>
 
               {/* Potential Payout */}
@@ -229,11 +220,7 @@ export default function ParlayCart() {
             </div>
           )}
         </div>
-      </SheetContent>
-    </Sheet>
+      </div>
+    </div>
   );
-}
-
-function cn(...classes: (string | undefined | null | false)[]): string {
-  return classes.filter(Boolean).join(' ');
 } 
