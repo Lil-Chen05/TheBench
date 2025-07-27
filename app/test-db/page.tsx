@@ -31,6 +31,37 @@ export default function TestDatabasePage() {
   const [user, setUser] = useState<User | null>(null);
   const supabase = createClient();
 
+  // Load user profile
+  const loadUserProfile = useCallback(async (userId: string) => {
+    try {
+      console.log('Loading profile for user:', userId);
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+      
+      if (error) {
+        if (error.code === 'PGRST116') {
+          console.log('No profile found for user, will need to create one');
+          setUserProfile(null);
+        } else {
+          console.error('Error loading profile:', error);
+          throw error;
+        }
+      } else {
+        console.log('Profile loaded successfully:', data);
+        setUserProfile(data);
+      }
+    } catch (error) {
+      console.error('Error in loadUserProfile:', error);
+      const errorMessage = error instanceof Error ? error.message : 
+        (error && typeof error === 'object' && 'message' in error) ? String(error.message) : 
+        String(error);
+      setMessage(`Error loading profile: ${errorMessage}`);
+    }
+  }, [supabase]);
+
   // Get current user
   useEffect(() => {
     const getUser = async () => {
@@ -78,37 +109,6 @@ export default function TestDatabasePage() {
       setLoading(false);
     }
   };
-
-  // Load user profile
-  const loadUserProfile = useCallback(async (userId: string) => {
-    try {
-      console.log('Loading profile for user:', userId);
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
-      
-      if (error) {
-        if (error.code === 'PGRST116') {
-          console.log('No profile found for user, will need to create one');
-          setUserProfile(null);
-        } else {
-          console.error('Error loading profile:', error);
-          throw error;
-        }
-      } else {
-        console.log('Profile loaded successfully:', data);
-        setUserProfile(data);
-      }
-    } catch (error) {
-      console.error('Error in loadUserProfile:', error);
-      const errorMessage = error instanceof Error ? error.message : 
-        (error && typeof error === 'object' && 'message' in error) ? String(error.message) : 
-        String(error);
-      setMessage(`Error loading profile: ${errorMessage}`);
-    }
-  }, [supabase]);
 
   // Add favorite team
   const addFavoriteTeam = async (teamId: string) => {
