@@ -367,20 +367,4 @@ export async function getParlayStats(userId: string): Promise<{
       totalWon: 0
     };
   }
-}
-
-// Balance management functions for parlays
-export async function getUserBalance(userId: string): Promise<number> {
-  const { getUserBalance: getBalance } = await import('./profiles');
-  return await getBalance(userId);
-}
-
-export async function updateUserBalance(userId: string, amount: number): Promise<boolean> {
-  const { updateUserBalance: updateBalance } = await import('./profiles');
-  return await updateBalance(userId, amount);
-}
-
-export async function addCreditsToUser(userId: string, amount: number): Promise<boolean> {
-  const { addCreditsToUser: addCredits } = await import('./profiles');
-  return await addCredits(userId, amount);
 } 

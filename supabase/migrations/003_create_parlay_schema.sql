@@ -96,12 +96,24 @@ CREATE TRIGGER enforce_parlay_pick_limit
   FOR EACH ROW
   EXECUTE FUNCTION check_parlay_pick_limit();
 
--- Function to calculate potential payout
+-- Function to calculate potential payout from American odds
 CREATE OR REPLACE FUNCTION calculate_potential_payout()
 RETURNS trigger AS $$
+DECLARE
+  decimal_odds numeric;
 BEGIN
-  -- Calculate potential payout based on bet amount and total odds
-  NEW.potential_payout = ROUND(NEW.bet_amount * (NEW.total_odds / 100));
+  -- Convert American odds to decimal odds for payout calculation
+  IF NEW.total_odds > 0 THEN
+    -- Positive American odds: (odds/100) + 1
+    decimal_odds := (NEW.total_odds / 100) + 1;
+  ELSE
+    -- Negative American odds: (100/|odds|) + 1
+    decimal_odds := (100 / ABS(NEW.total_odds)) + 1;
+  END IF;
+  
+  -- Calculate potential payout: bet_amount * decimal_odds
+  NEW.potential_payout := ROUND(NEW.bet_amount * decimal_odds);
+  
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;

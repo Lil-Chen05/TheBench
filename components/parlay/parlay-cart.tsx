@@ -33,11 +33,52 @@ export default function ParlayCart() {
       showToast(getValidationMessage(), "error");
       return;
     }
+
     setIsPlacingParlay(true);
-    await new Promise(resolve => setTimeout(resolve, 1500)); // Mock API call
-    showToast("Parlay placed successfully! Good luck!", "success");
-    clearCart();
-    setIsPlacingParlay(false);
+
+    try {
+      // Prepare the parlay data
+      const parlayData = {
+        picks: picks.map(pick => ({
+          playerName: pick.playerName,
+          teamName: pick.teamName,
+          propType: pick.propType,
+          predictedValue: pick.predictedValue,
+          pickType: pick.pickType,
+          odds: pick.odds
+        })),
+        betAmount: betAmount,
+        sport: 'basketball' // Default to basketball for now
+      };
+
+      // Call the API to place the parlay
+      const response = await fetch('/api/parlays', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(parlayData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to place parlay');
+      }
+
+      if (result.success) {
+        showToast("Parlay placed successfully! Good luck!", "success");
+        clearCart();
+      } else {
+        throw new Error(result.error || 'Failed to place parlay');
+      }
+
+    } catch (error) {
+      console.error('Error placing parlay:', error);
+      showToast(error instanceof Error ? error.message : 'Failed to place parlay', "error");
+    } finally {
+      setIsPlacingParlay(false);
+    }
   };
 
   const validationMessage = getValidationMessage();
