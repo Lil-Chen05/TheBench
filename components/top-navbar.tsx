@@ -161,10 +161,10 @@ export default function TopNavbar() {
               </div>
               
               <div className="p-2">
-                <button className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg transition-all duration-200 hover:scale-[1.02]">
+                <Link href="/account" className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg transition-all duration-200 hover:scale-[1.02]">
                   <Settings className="w-4 h-4" />
                   <span className="font-medium">Account Settings</span>
-                </button>
+                </Link>
                 
                 <button 
                   onClick={handleSignOut}

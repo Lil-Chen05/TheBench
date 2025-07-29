@@ -95,13 +95,7 @@ export default function DashboardContent({ user, profile }: DashboardContentProp
           </div>
         </div>
 
-        <div className="bg-black text-white p-6 rounded border border-black">
-          <div className="flex items-center gap-2 mb-4">
-            <InfoIcon className="w-5 h-5 text-[#F4D03F]" />
-            <h3 className="text-lg font-bold">Getting Started</h3>
-          </div>
-          <FetchDataSteps />
-        </div>
+      
 
         <pre className="text-xs text-white bg-black p-3 rounded border border-black max-h-32 overflow-auto">
           {JSON.stringify(user, null, 2)}
