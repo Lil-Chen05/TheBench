@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const token_hash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
-  const next = searchParams.get("next") ?? "/dashboard";
+  const next = searchParams.get("next") ?? "/auth/login";
 
   logger.info("Email confirmation attempt", {
     hasToken: !!token_hash,
@@ -56,8 +56,8 @@ export async function GET(request: NextRequest) {
         type,
       });
 
-      // Determine the correct redirect URL
-      const redirectUrl = getAuthRedirectUrl(next);
+      // Determine the correct redirect URL - always redirect to login after confirmation
+      const redirectUrl = getAuthRedirectUrl('/auth/login');
       
       logger.redirectAttempt(request.url, redirectUrl, true);
       

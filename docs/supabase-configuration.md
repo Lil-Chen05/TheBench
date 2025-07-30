@@ -64,27 +64,46 @@ The Bench Team
 
 ### Site URL Settings
 - **Site URL**: `https://playthebench.vercel.app`
-- **Redirect URLs**:
+- **Redirect URLs** (CORRECTED):
   ```
-  https://playthebench.vercel.app/auth/callback
-  https://playthebench.vercel.app/dashboard
-  http://localhost:3000/auth/callback
-  http://localhost:3000/dashboard
+  https://playthebench.vercel.app/auth/login
+  https://playthebench.vercel.app/auth/confirm
+  http://localhost:3000/auth/login
+  http://localhost:3000/auth/confirm
   ```
 
 ### Environment-Specific URLs
 
 **Production:**
 - Site URL: `https://playthebench.vercel.app`
-- Redirect URLs: `https://playthebench.vercel.app/auth/callback`
+- Redirect URLs: 
+  - `https://playthebench.vercel.app/auth/login`
+  - `https://playthebench.vercel.app/auth/confirm`
 
 **Development:**
 - Site URL: `http://localhost:3000`
-- Redirect URLs: `http://localhost:3000/auth/callback`
+- Redirect URLs:
+  - `http://localhost:3000/auth/login`
+  - `http://localhost:3000/auth/confirm`
 
 **Preview Deployments:**
 - Site URL: `https://[preview-url].vercel.app`
-- Redirect URLs: `https://[preview-url].vercel.app/auth/callback`
+- Redirect URLs:
+  - `https://[preview-url].vercel.app/auth/login`
+  - `https://[preview-url].vercel.app/auth/confirm`
+
+## Authentication Flow
+
+### Email Confirmation Flow
+1. User signs up → Email sent with confirmation link
+2. User clicks link → Goes to `/auth/confirm` route
+3. Email confirmed → Redirected to `/auth/login` with success message
+4. User logs in → Access to protected routes
+
+### Redirect URL Logic
+- **Signup**: Email confirmation redirects to `/auth/login`
+- **Email Confirmation**: Always redirects to `/auth/login` with success message
+- **Login**: After successful login, redirects to dashboard or protected route
 
 ## RLS Policies for Production
 
@@ -177,7 +196,7 @@ NEXT_PUBLIC_STAGING_URL=https://staging.playthebench.vercel.app
 
 ### Authentication Flow
 - [ ] Test signup flow
-- [ ] Test email confirmation
+- [ ] Test email confirmation redirects to `/auth/login`
 - [ ] Test login flow
 - [ ] Test password reset
 - [ ] Test logout flow
