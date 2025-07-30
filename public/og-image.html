@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Bench - Open Graph Image</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            width: 1200px;
+            height: 630px;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Background Pattern */
+        .bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(244, 208, 63, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(244, 208, 63, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(244, 208, 63, 0.03) 0%, transparent 50%);
+        }
+        
+        /* Main Container */
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+        }
+        
+        /* Logo Section */
+        .logo-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .main-logo {
+            font-size: 72px;
+            font-weight: 900;
+            color: #F4D03F;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(244, 208, 63, 0.3);
+            position: relative;
+        }
+        
+        .main-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent 0%, #F4D03F 50%, transparent 100%);
+            border-radius: 2px;
+        }
+        
+        .tagline {
+            font-size: 24px;
+            font-weight: 600;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            font-weight: 400;
+            color: #cccccc;
+            letter-spacing: 1px;
+        }
+        
+        /* Sports Icons */
+        .sports-icons {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .sport-icon {
+            position: absolute;
+            opacity: 0.1;
+            color: #F4D03F;
+        }
+        
+        .basketball {
+            top: 15%;
+            left: 10%;
+            font-size: 48px;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .hockey {
+            top: 25%;
+            right: 15%;
+            font-size: 40px;
+            animation: float 6s ease-in-out infinite 2s;
+        }
+        
+        .football {
+            bottom: 20%;
+            left: 15%;
+            font-size: 44px;
+            animation: float 6s ease-in-out infinite 4s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Feature Cards */
+        .features {
+            display: flex;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.8) 0%, rgba(0, 0, 0, 0.9) 100%);
+            border: 1px solid rgba(244, 208, 63, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+            color: #F4D03F;
+        }
+        
+        .feature-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        
+        .feature-desc {
+            font-size: 12px;
+            color: #cccccc;
+            line-height: 1.4;
+        }
+        
+        /* Bottom Accent */
+        .bottom-accent {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #F4D03F 0%, #f39c12 50%, #F4D03F 100%);
+        }
+        
+        /* Glow Effects */
+        .glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(244, 208, 63, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        
+        /* Responsive adjustments for exact dimensions */
+        @media (max-width: 1200px) {
+            body {
+                width: 1200px;
+                height: 630px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Pattern -->
+    <div class="bg-pattern"></div>
+    
+    <!-- Glow Effect -->
+    <div class="glow"></div>
+    
+    <!-- Sports Icons -->
+    <div class="sports-icons">
+        <div class="sport-icon basketball">🏀</div>
+        <div class="sport-icon hockey">🏒</div>
+        <div class="sport-icon football">🏈</div>
+    </div>
+    
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Logo Section -->
+        <div class="logo-section">
+            <h1 class="main-logo">THE BENCH</h1>
+            <p class="tagline">Canadian University Sports Betting</p>
+            <p class="subtitle">Competitive Odds • Exciting Parlays • Campus Pride</p>
+        </div>
+        
+        <!-- Feature Cards -->
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <div class="feature-title">Smart Picks</div>
+                <div class="feature-desc">Data-driven insights for winning strategies</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-title">Live Action</div>
+                <div class="feature-desc">Real-time updates and live scoring</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <div class="feature-title">Campus Pride</div>
+                <div class="feature-desc">Support your university teams</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bottom Accent -->
+    <div class="bottom-accent"></div>
+</body>
+</html> 
