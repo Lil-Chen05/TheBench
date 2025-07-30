@@ -1,22 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Check, Plus } from "lucide-react";
 import { useParlayCart } from "@/components/parlay/parlay-context";
 import { useToast } from "@/components/ui/toast";
-
-interface BasketballTeam {
-  id: number;
-  team_name: string;
-  abbr: string;
-  city: string;
-  province: string;
-}
 
 interface PlayerProp {
   id: string;

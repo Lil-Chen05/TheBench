@@ -1,18 +1,18 @@
 "use client";
 import Link from "next/link";
-import { AuthButton } from "@/components/auth-button";
 import { usePathname } from "next/navigation";
 import ParlayCartBadge from "@/components/parlay/parlay-cart-badge";
 import { useState, useEffect } from "react";
-import { ChevronDown, Settings, LogOut, User, Loader2 } from "lucide-react";
+import { ChevronDown, Settings, LogOut, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
+import { User } from "@supabase/supabase-js";
 
 export default function TopNavbar() {
   const pathname = usePathname();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
 

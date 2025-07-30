@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { X, Lock, Eye, EyeOff, Loader2, CheckCircle, AlertCircle } from "lucide-react";
+import { X, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
@@ -108,7 +108,7 @@ export default function ChangePasswordModal({
 
     try {
       // Update password using Supabase
-      const { data, error } = await supabase.auth.updateUser({
+      const { error } = await supabase.auth.updateUser({
         password: formData.newPassword
       });
 
@@ -117,13 +117,7 @@ export default function ChangePasswordModal({
       }
 
       // Success
-      showToast(
-        <div className="flex items-center gap-2">
-          <CheckCircle className="w-4 h-4 text-green-400" />
-          <span>Password updated successfully!</span>
-        </div>,
-        "success"
-      );
+      showToast("Password updated successfully!", "success");
 
       // Reset form and close modal
       setFormData({
@@ -134,25 +128,21 @@ export default function ChangePasswordModal({
       setErrors({});
       onClose();
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error updating password:', error);
       
       let errorMessage = 'Failed to update password. Please try again.';
       
       // Handle specific Supabase auth errors
-      if (error.message?.includes('password')) {
-        errorMessage = 'Password does not meet requirements.';
-      } else if (error.message?.includes('session')) {
-        errorMessage = 'Session expired. Please log in again.';
+      if (error instanceof Error) {
+        if (error.message?.includes('password')) {
+          errorMessage = 'Password does not meet requirements.';
+        } else if (error.message?.includes('session')) {
+          errorMessage = 'Session expired. Please log in again.';
+        }
       }
       
-      showToast(
-        <div className="flex items-center gap-2">
-          <AlertCircle className="w-4 h-4 text-red-400" />
-          <span>{errorMessage}</span>
-        </div>,
-        "error"
-      );
+      showToast(errorMessage, "error");
     } finally {
       setIsUpdating(false);
     }

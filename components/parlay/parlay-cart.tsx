@@ -18,7 +18,6 @@ export default function ParlayCart() {
     removeFromCart,
     clearCart,
     updateBetAmount,
-    closeCart,
     getTotalOdds,
     getPotentialPayout,
     getPickCount,
@@ -84,7 +83,7 @@ export default function ParlayCart() {
   const validationMessage = getValidationMessage();
   const canPlace = canPlaceParlay();
 
-  const formatPickDescription = (pick: any) => {
+  const formatPickDescription = (pick: { pickType: string; predictedValue: number; propType: string }) => {
     const direction = pick.pickType === 'over' ? '↑' : '↓';
     return `${direction} ${pick.predictedValue} ${pick.propType}`;
   };

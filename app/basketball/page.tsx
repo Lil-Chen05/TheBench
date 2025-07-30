@@ -11,6 +11,7 @@ import { ToastProvider } from "@/components/ui/toast";
 import ParlayCart from "@/components/parlay/parlay-cart";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { User } from "@supabase/supabase-js";
 
 interface UserProfile {
   id: string;
@@ -22,7 +23,7 @@ interface UserProfile {
 }
 
 function BasketballContent() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const { isDashboardShrunk } = useParlayCart();

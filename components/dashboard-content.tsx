@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { InfoIcon } from "lucide-react";
-import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
 import TeamSportSelectionModal from "@/components/modals/team-sport-selection-modal";
 import { useParlayCart } from "@/components/parlay/parlay-context";
 import type { User } from "@supabase/supabase-js";

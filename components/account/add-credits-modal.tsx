@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { X, CreditCard, Loader2, CheckCircle, AlertCircle } from "lucide-react";
+import { X, CreditCard, Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
@@ -70,13 +70,7 @@ export default function AddCreditsModal({
       onBalanceUpdate(newBalance);
 
       // Show success toast
-      showToast(
-        <div className="flex items-center gap-2">
-          <CheckCircle className="w-4 h-4 text-green-400" />
-          <span>10 credits added successfully!</span>
-        </div>,
-        "success"
-      );
+      showToast("10 credits added successfully!", "success");
 
       // Close modal
       onClose();
@@ -84,13 +78,7 @@ export default function AddCreditsModal({
     } catch (error) {
       console.error('Error adding credits:', error);
       
-      showToast(
-        <div className="flex items-center gap-2">
-          <AlertCircle className="w-4 h-4 text-red-400" />
-          <span>Failed to add credits. Please try again.</span>
-        </div>,
-        "error"
-      );
+      showToast("Failed to add credits. Please try again.", "error");
     } finally {
       setIsAdding(false);
     }

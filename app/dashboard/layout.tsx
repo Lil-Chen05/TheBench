@@ -3,7 +3,6 @@ import Sidebar from "@/components/sidebar";
 import { ParlayCartProvider } from "@/components/parlay/parlay-context";
 import { ToastProvider } from "@/components/ui/toast";
 import ParlayCart from "@/components/parlay/parlay-cart";
-import DashboardContent from "@/components/dashboard-content";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { User } from "@supabase/supabase-js";
 import { UserProfile } from "@/lib/database/profiles";
-import { Lock, Mail, Calendar } from "lucide-react";
+import { Mail, Calendar } from "lucide-react";
 import ChangePasswordModal from "./change-password-modal";
 
 interface AccountInformationProps {
