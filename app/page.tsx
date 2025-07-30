@@ -1,8 +1,36 @@
-import { AuthButton } from "@/components/auth-button";
-import { ThemeSwitcher } from "@/components/theme-switcher";
+"use client";
+
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { ThemeSwitcher } from "@/components/theme-switcher";
+import { AuthButton } from "@/components/auth-button";
+import { Trophy, ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { User } from "@supabase/supabase-js";
 
 export default function Home() {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const supabase = createClient();
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+      setLoading(false);
+    };
+
+    getUser();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [supabase]);
+
   return (
     <main className="min-h-screen flex flex-col items-center bg-black">
       {/* HEADER */}
@@ -24,13 +52,29 @@ export default function Home() {
       </nav>
 
       {/* HERO SECTION */}
-      <section className="w-full flex flex-col items-center justify-center py-24 bg-yellow-400 animate-fade-in">
+      <section className="w-full flex flex-col items-center justify-center py-24 bg-yellow-400 animate-fade-in relative">
         <h1 className="text-6xl md:text-8xl font-black tracking-tight text-black drop-shadow-lg mb-4 font-mono uppercase pixelated-text">
           THE BENCH
         </h1>
-        <p className="text-2xl md:text-3xl font-extrabold text-black tracking-wide text-center mb-2 animate-slide-up">
+        <p className="text-2xl md:text-3xl font-extrabold text-black tracking-wide text-center mb-8 animate-slide-up">
           NO ONE RIDES THE BENCH HERE
         </p>
+        
+        {/* Dashboard Access Button for Logged-in Users */}
+        {!loading && user && (
+          <div className="animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
+            <Link href="/dashboard">
+              <Button className="bg-black text-yellow-400 hover:bg-gray-900 hover:text-yellow-300 font-bold text-lg px-8 py-4 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 border-2 border-black hover:border-yellow-400 group">
+                <Trophy className="w-6 h-6 mr-3 group-hover:rotate-12 transition-transform duration-300" />
+                Go to Dashboard
+                <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform duration-300" />
+              </Button>
+            </Link>
+            <p className="text-black/70 text-center mt-4 font-medium">
+              Welcome back! Ready to make some picks?
+            </p>
+          </div>
+        )}
       </section>
 
       {/* OUR STORY SECTION */}
@@ -40,7 +84,7 @@ export default function Home() {
             <CardContent className="p-8">
               <h2 className="text-3xl md:text-4xl font-black mb-4 text-yellow-400 uppercase tracking-wider">Our Story</h2>
               <p className="text-lg md:text-xl font-medium leading-relaxed">
-                In every game, there's more happening than what we see on the court or field. <span className="font-extrabold text-yellow-400">The Bench</span> is where the next breakout moment brews. It's where energy builds, where teammates support, where stories begin. Our platform gives fans and students a chance to step off The Bench and into the action—whether they're making picks, competing in fantasy leagues, or repping their school pride. Just like real players fighting for their shot, our users aren't bystanders—they're active participants in the game.
+                In every game, there&apos;s more happening than what we see on the court or field. <span className="font-extrabold text-yellow-400">The Bench</span> is where the next breakout moment brews. It&apos;s where energy builds, where teammates support, where stories begin. Our platform gives fans and students a chance to step off The Bench and into the action—whether they&apos;re making picks, competing in fantasy leagues, or repping their school pride. Just like real players fighting for their shot, our users aren&apos;t bystanders—they&apos;re active participants in the game.
               </p>
             </CardContent>
           </Card>
@@ -54,7 +98,7 @@ export default function Home() {
             <CardContent className="p-8">
               <h2 className="text-3xl md:text-4xl font-black mb-4 uppercase tracking-wider">Behind The Name</h2>
               <p className="text-lg md:text-xl font-medium leading-relaxed">
-                The line <span className="font-extrabold">'No one rides the bench here'</span> flips a historically negative sports phrase into a call to action. It's a name that invites everyone into the game — especially powerful on campuses where students may feel on the outside of varsity athletics. It gives you long-term content storytelling potential: underdog stories, rising talent, fan engagement, 'next man up' culture. Scalability: Works beyond fantasy sports — merch, interviews, media, athlete collabs, etc.
+                The line <span className="font-extrabold">&apos;No one rides the bench here&apos;</span> flips a historically negative sports phrase into a call to action. It&apos;s a name that invites everyone into the game — especially powerful on campuses where students may feel on the outside of varsity athletics. It gives you long-term content storytelling potential: underdog stories, rising talent, fan engagement, &apos;next man up&apos; culture. Scalability: Works beyond fantasy sports — merch, interviews, media, athlete collabs, etc.
               </p>
             </CardContent>
           </Card>

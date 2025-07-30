@@ -47,26 +47,23 @@ export function ForgotPasswordForm({
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       {success ? (
-        <Card>
+        <Card className="bg-white text-black shadow-lg">
           <CardHeader>
-            <CardTitle className="text-2xl">Check Your Email</CardTitle>
-            <CardDescription>Password reset instructions sent</CardDescription>
+            <CardTitle className="text-3xl font-black text-black">Check Your Email</CardTitle>
+            <CardDescription className="text-base text-black">Password reset instructions sent</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-black">
               If you registered using your email and password, you will receive
               a password reset email.
             </p>
           </CardContent>
         </Card>
       ) : (
-        <Card>
+        <Card className="bg-white text-black shadow-lg">
           <CardHeader>
-            <CardTitle className="text-2xl">Reset Your Password</CardTitle>
-            <CardDescription>
-              Type in your email and we&apos;ll send you a link to reset your
-              password
-            </CardDescription>
+            <CardTitle className="text-3xl font-black text-black">Reset Your Password</CardTitle>
+            <CardDescription className="text-base text-black">Type in your email and we&apos;ll send you a link to reset your password</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleForgotPassword}>
@@ -82,8 +79,8 @@ export function ForgotPasswordForm({
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
-                {error && <p className="text-sm text-red-500">{error}</p>}
-                <Button type="submit" className="w-full" disabled={isLoading}>
+                {error && <p className="text-sm text-red-500 font-semibold bg-white border border-red-200 rounded px-2 py-1">{error}</p>}
+                <Button type="submit" className="w-full mt-2" disabled={isLoading}>
                   {isLoading ? "Sending..." : "Send reset email"}
                 </Button>
               </div>
@@ -91,7 +88,7 @@ export function ForgotPasswordForm({
                 Already have an account?{" "}
                 <Link
                   href="/auth/login"
-                  className="underline underline-offset-4"
+                  className="text-[#F4D03F] font-bold hover:underline hover:text-black transition"
                 >
                   Login
                 </Link>
