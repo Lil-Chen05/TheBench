@@ -52,8 +52,8 @@ export function SignUpForm({
     try {
       logger.info("User signup attempt", { email });
 
-      // Get the correct redirect URL for this environment
-      const redirectUrl = getAuthRedirectUrl('/dashboard');
+      // Get the correct redirect URL for this environment - redirect to login after confirmation
+      const redirectUrl = getAuthRedirectUrl('/auth/login');
 
       const { data, error } = await supabase.auth.signUp({
         email,
