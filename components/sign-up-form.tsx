@@ -15,6 +15,8 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { getAuthRedirectUrl } from "@/lib/utils/environment";
+import { logger } from "@/lib/utils/logger";
 
 export function SignUpForm({
   className,
@@ -33,24 +35,49 @@ export function SignUpForm({
     setIsLoading(true);
     setError(null);
 
+    // Validate passwords match
     if (password !== repeatPassword) {
       setError("Passwords do not match");
       setIsLoading(false);
       return;
     }
 
+    // Validate password strength
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long");
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      const { error } = await supabase.auth.signUp({
+      logger.info("User signup attempt", { email });
+
+      // Get the correct redirect URL for this environment
+      const redirectUrl = getAuthRedirectUrl('/dashboard');
+
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/dashboard`,
+          emailRedirectTo: redirectUrl,
         },
       });
-      if (error) throw error;
+
+      if (error) {
+        logger.authError(null, "signup", error);
+        throw error;
+      }
+
+      if (data?.user) {
+        logger.authSuccess(data.user.id, "signup", { email });
+      }
+
+      // Redirect to success page
       router.push("/auth/sign-up-success");
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred");
+      const errorMessage = error instanceof Error ? error.message : "An error occurred";
+      setError(errorMessage);
+      logger.error("Signup form error", { email, error: errorMessage });
     } finally {
       setIsLoading(false);
     }
@@ -75,6 +102,7 @@ export function SignUpForm({
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  disabled={isLoading}
                 />
               </div>
               <div className="grid gap-2">
@@ -87,7 +115,10 @@ export function SignUpForm({
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  disabled={isLoading}
+                  minLength={8}
                 />
+                <p className="text-xs text-gray-500">Password must be at least 8 characters long</p>
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
@@ -99,20 +130,29 @@ export function SignUpForm({
                   required
                   value={repeatPassword}
                   onChange={(e) => setRepeatPassword(e.target.value)}
+                  disabled={isLoading}
                 />
               </div>
-              {error && <p className="text-sm text-red-500 font-semibold bg-white border border-red-200 rounded px-2 py-1">{error}</p>}
-              <Button type="submit" className="w-full mt-2" disabled={isLoading}>
-                {isLoading ? "Creating an account..." : "Sign up"}
+              <Button
+                type="submit"
+                className="w-full bg-black text-yellow-400 hover:bg-gray-900 hover:text-yellow-300 font-bold"
+                disabled={isLoading}
+              >
+                {isLoading ? "Creating account..." : "Create account"}
               </Button>
-            </div>
-            <div className="mt-4 text-center text-sm">
-              Already have an account?{" "}
-              <Link href="/auth/login" className="text-[#F4D03F] font-bold hover:underline hover:text-black transition">
-                Login
-              </Link>
+              {error && (
+                <div className="text-red-500 text-sm text-center bg-red-50 border border-red-200 rounded p-3">
+                  {error}
+                </div>
+              )}
             </div>
           </form>
+          <div className="mt-4 text-center text-sm">
+            Already have an account?{" "}
+            <Link href="/auth/login" className="text-yellow-400 hover:text-yellow-300 font-semibold">
+              Sign in
+            </Link>
+          </div>
         </CardContent>
       </Card>
     </div>
