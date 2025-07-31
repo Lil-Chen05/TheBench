@@ -90,7 +90,7 @@ The live application demonstrates:
 
 ## Contact
 
-- **LinkedIn:** [LinkedIn](https://www.linkedin.com/in/jerry-chen-63a248289/)
+- **LinkedIn:** [LinkedIn Profile](https://www.linkedin.com/in/jerry-chen-63a248289/)
 - **Email:** [chenxingjia05@gmail.com](mailto:chenxingjia05@gmail.com)
 - **GitHub:** [https://github.com/Lil-Chen05](https://github.com/Lil-Chen05)
 
