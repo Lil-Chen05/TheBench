@@ -1,6 +1,6 @@
 # The Bench - Canadian University Sports Platform
 
-A modern sports betting platform for Canadian university athletics, built with Next.js 15, Supabase, and TypeScript. This portfolio project demonstrates production-ready full-stack development with secure authentication, real-time data handling, and professional UI/UX design.
+A modern sports fantasy platform for Canadian university athletics, built with Next.js 15, Supabase, and TypeScript. This portfolio project demonstrates production-ready full-stack development with secure authentication, real-time data handling, and professional UI/UX design.
 
 **Live Demo:** [https://playthebench.vercel.app](https://playthebench.vercel.app)
 
@@ -27,6 +27,7 @@ This is a portfolio demonstration project showcasing advanced web development sk
 - Machine learning models for odds calculation and predictions
 - Live betting with real-time updates
 - Multi-sport expansion beyond basketball
+- Stripe payment implementaion
 
 ## Technical Skills Demonstrated
 
@@ -77,16 +78,6 @@ This is a portfolio demonstration project showcasing advanced web development sk
 - **Styling:** Tailwind CSS + shadcn/ui
 - **Deployment:** Vercel
 
-## Project Structure
-├── app/                  # Next.js pages and API routes
-├── components/           # React components and UI elements
-├── lib/                  # Utilities and configuration
-└── public/               # Static assets
-
-## Project Motivation
-
-[Personal motivation and story to be added]
-
 ## Live Demo Experience
 
 The live application demonstrates:
@@ -99,9 +90,9 @@ The live application demonstrates:
 
 ## Contact
 
-- **LinkedIn:** [https://www.linkedin.com/in/jerry-chen-63a248289/]
-- **Email:** [chenxingjia05@gmail.com]
-- **GitHub:** [https://github.com/Lil-Chen05]
+- **LinkedIn:** [LinkedIn](https://www.linkedin.com/in/jerry-chen-63a248289/)
+- **Email:** [chenxingjia05@gmail.com](chenxingjia05@gmail.com)
+- **GitHub:** [https://github.com/Lil-Chen05](https://github.com/Lil-Chen05)
 
 ## License
 
