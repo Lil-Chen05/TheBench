@@ -69,7 +69,7 @@ export function getEnvironment(): EnvironmentConfig {
 /**
  * Get the appropriate redirect URL for authentication flows
  */
-export function getAuthRedirectUrl(path: string = '/dashboard'): string {
+export function getAuthRedirectUrl(path: string = '/auth/login'): string {
   const config = getEnvironment();
   return `${config.baseUrl}${path}`;
 }
@@ -103,7 +103,7 @@ export function getEnvironmentConfig() {
     },
     auth: {
       redirectUrl: getAuthRedirectUrl(),
-      successUrl: getAuthRedirectUrl('/dashboard'),
+      successUrl: getAuthRedirectUrl('/auth/login'),
       errorUrl: getAuthRedirectUrl('/auth/error'),
     },
   };
