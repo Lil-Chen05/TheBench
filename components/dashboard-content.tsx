@@ -54,50 +54,94 @@ export default function DashboardContent({ user, profile }: DashboardContentProp
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-cover bg-center bg-no-repeat relative" style={{backgroundImage: "url('https://images.sidearmdev.com/convert?url=https%3a%2f%2fdxbhsrqyrr690.cloudfront.net%2fsidearm.nextgen.sites%2fmcgill.sidearmsports.com%2fimages%2f2019%2f11%2f15%2fBBALL_m_Whyne_Quarry_McG_UQAM_2018_19_MG.jpg&type=webp')"}}>
+      <div className="absolute inset-0 bg-black/10"></div>
+      
       <main 
         className={cn(
-          "ml-[50px] mt-[60px] flex flex-col gap-12 p-10 transition-all duration-300 ease-in-out",
+          "relative z-10 mt-[60px] flex flex-col gap-8 p-10 transition-all duration-300 ease-in-out",
+          "ml-[60px]", // Always account for collapsed sidebar
           isDashboardShrunk 
             ? "mr-[400px] lg:mr-[450px] xl:mr-[500px]" 
             : "mr-0"
         )}
       >
-        <div className="bg-black text-[#F4D03F] text-2xl font-black p-4 rounded border border-black mb-2">
-          Dashboard
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <div className="bg-black text-white p-4 rounded border border-black">
-            <h3 className="text-lg font-bold mb-2">Welcome Back!</h3>
-            <p className="text-gray-300 text-sm">Ready to make some picks?</p>
-          </div>
+         {/* Dashboard Header with athletic styling */}
+        <div className="group relative overflow-hidden">
+          {/* Animated gradient background - made more transparent */}
+          <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 via-yellow-300/20 to-yellow-400/20 group-hover:from-yellow-400/30 group-hover:via-yellow-300/30 group-hover:to-yellow-400/30 transition-all duration-500 rounded-xl"></div>
           
-          <div className="bg-black text-white p-4 rounded border border-black">
-            <h3 className="text-lg font-bold mb-2">Balance</h3>
-            <p className="text-[#F4D03F] text-xl font-bold">${currentProfile?.balance || 0}</p>
-          </div>
+          {/* Glow effect on hover */}
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-yellow-400/10 via-yellow-300/15 to-yellow-400/10 transition-opacity duration-700 rounded-xl"></div>
           
-          <div className="bg-black text-white p-4 rounded border border-black">
-            <h3 className="text-lg font-bold mb-2">Favorite Teams</h3>
-            <p className="text-gray-300 text-sm">
-              {currentProfile?.favorite_teams?.length || 0} teams selected
-            </p>
-          </div>
-          
-          <div className="bg-black text-white p-4 rounded border border-black">
-            <h3 className="text-lg font-bold mb-2">Favorite Sports</h3>
-            <p className="text-gray-300 text-sm">
-              {currentProfile?.favorite_sports?.length || 0} sports selected
-            </p>
+          <div className="relative z-10 bg-black/10 backdrop-blur-sm text-yellow-400 text-3xl font-black p-6 rounded-xl border-2 border-yellow-400/40 shadow-2xl group-hover:shadow-xl transition-all duration-300 group-hover:scale-[1.02] group-hover:text-yellow-300">
+            <span className="pixelated-text uppercase tracking-wide drop-shadow-lg">Dashboard</span>
           </div>
         </div>
 
-      
+        {/* Stats Grid with athletic cards */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {/* Welcome Card */}
+          <div className="group relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-gray-900/95 to-black/95 group-hover:from-black/90 group-hover:via-gray-800/95 group-hover:to-black/90 transition-all duration-500 rounded-lg"></div>
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-yellow-400/10 via-yellow-400/20 to-yellow-400/10 transition-opacity duration-700 rounded-lg"></div>
+            
+            <div className="relative z-10 p-6 rounded-lg border-2 border-yellow-400/30 shadow-lg group-hover:border-yellow-400/60 transition-all duration-300 group-hover:scale-105 h-full flex flex-col justify-between min-h-[120px]">
+              <h3 className="text-xl font-black text-yellow-400 mb-3 uppercase tracking-wide pixelated-text group-hover:text-yellow-300 transition-colors duration-300">Welcome Back!</h3>
+              <p className="text-yellow-300/80 text-sm font-semibold">Ready to make some championship picks?</p>
+            </div>
+          </div>
+          
+          {/* Balance Card */}
+          <div className="group relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-gray-900/95 to-black/95 group-hover:from-black/90 group-hover:via-gray-800/95 group-hover:to-black/90 transition-all duration-500 rounded-lg"></div>
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-yellow-400/10 via-yellow-400/20 to-yellow-400/10 transition-opacity duration-700 rounded-lg"></div>
+            
+            <div className="relative z-10 p-6 rounded-lg border-2 border-yellow-400/30 shadow-lg group-hover:border-yellow-400/60 transition-all duration-300 group-hover:scale-105 h-full flex flex-col justify-between min-h-[120px]">
+              <h3 className="text-xl font-black text-yellow-400 mb-3 uppercase tracking-wide pixelated-text group-hover:text-yellow-300 transition-colors duration-300">Balance</h3>
+              <p className="text-yellow-400 text-2xl font-black group-hover:text-yellow-300 transition-colors duration-300">${currentProfile?.balance || 0}</p>
+            </div>
+          </div>
+          
+          {/* Favorite Teams Card */}
+          <div className="group relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-gray-900/95 to-black/95 group-hover:from-black/90 group-hover:via-gray-800/95 group-hover:to-black/90 transition-all duration-500 rounded-lg"></div>
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-yellow-400/10 via-yellow-400/20 to-yellow-400/10 transition-opacity duration-700 rounded-lg"></div>
+            
+            <div className="relative z-10 p-6 rounded-lg border-2 border-yellow-400/30 shadow-lg group-hover:border-yellow-400/60 transition-all duration-300 group-hover:scale-105 h-full flex flex-col justify-between min-h-[120px]">
+              <h3 className="text-xl font-black text-yellow-400 mb-3 uppercase tracking-wide pixelated-text group-hover:text-yellow-300 transition-colors duration-300">Your Teams</h3>
+              <p className="text-yellow-300/80 text-sm font-semibold">
+                {currentProfile?.favorite_teams?.length || 0} championship teams
+              </p>
+            </div>
+          </div>
+          
+          {/* Favorite Sports Card */}
+          <div className="group relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-gray-900/95 to-black/95 group-hover:from-black/90 group-hover:via-gray-800/95 group-hover:to-black/90 transition-all duration-500 rounded-lg"></div>
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-yellow-400/10 via-yellow-400/20 to-yellow-400/10 transition-opacity duration-700 rounded-lg"></div>
+            
+            <div className="relative z-10 p-6 rounded-lg border-2 border-yellow-400/30 shadow-lg group-hover:border-yellow-400/60 transition-all duration-300 group-hover:scale-105 h-full flex flex-col justify-between min-h-[120px]">
+              <h3 className="text-xl font-black text-yellow-400 mb-3 uppercase tracking-wide pixelated-text group-hover:text-yellow-300 transition-colors duration-300">Your Sports</h3>
+              <p className="text-yellow-300/80 text-sm font-semibold">
+                {currentProfile?.favorite_sports?.length || 0} elite sports
+              </p>
+            </div>
+          </div>
+        </div>
 
-        <pre className="text-xs text-white bg-black p-3 rounded border border-black max-h-32 overflow-auto">
-          {JSON.stringify(user, null, 2)}
-        </pre>
+        {/* User Data Debug Card with athletic styling */}
+        <div className="group relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-gray-900/95 to-black/95 group-hover:from-black/90 group-hover:via-gray-800/95 group-hover:to-black/90 transition-all duration-500 rounded-lg"></div>
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-yellow-400/10 via-yellow-400/20 to-yellow-400/10 transition-opacity duration-700 rounded-lg"></div>
+          
+          <div className="relative z-10 p-6 rounded-lg border-2 border-yellow-400/30 shadow-lg group-hover:border-yellow-400/60 transition-all duration-300">
+            <h3 className="text-lg font-black text-yellow-400 mb-4 uppercase tracking-wide pixelated-text group-hover:text-yellow-300 transition-colors duration-300">Player Profile Data</h3>
+            <pre className="text-xs text-yellow-100 bg-black/30 p-4 rounded border border-yellow-400/20 max-h-32 overflow-auto font-mono">
+              {JSON.stringify(user, null, 2)}
+            </pre>
+          </div>
+        </div>
       </main>
 
       {showModal && (
@@ -110,4 +154,4 @@ export default function DashboardContent({ user, profile }: DashboardContentProp
       )}
     </div>
   );
-} 
+}

@@ -43,22 +43,31 @@ export default function Home() {
             <div className="hidden md:block">
               <ThemeSwitcher />
             </div>
-            {/* Auth buttons, styled for theme */}
-            <div className="[&_*]:!rounded-full [&_*]:!font-extrabold [&_*]:!uppercase [&_*]:!shadow-lg [&_*]:transition [&_*]:duration-200 [&_*]:hover:scale-105 [&_a]:!text-black [&_a]:!bg-yellow-400 [&_a]:!border-yellow-400 [&_a]:hover:!bg-yellow-300 [&_a]:hover:!border-yellow-300">
-              <AuthButton />
-            </div>
           </div>
         </div>
       </nav>
 
       {/* HERO SECTION */}
-      <section className="w-full flex flex-col items-center justify-center py-24 bg-yellow-400 animate-fade-in relative">
+      <section className="w-full flex flex-col items-center justify-center pt-32 py-16 bg-yellow-400 animate-fade-in relative">
         <h1 className="text-6xl md:text-8xl font-black tracking-tight text-black drop-shadow-lg mb-4 font-mono uppercase pixelated-text">
           THE BENCH
         </h1>
         <p className="text-2xl md:text-3xl font-extrabold text-black tracking-wide text-center mb-8 animate-slide-up">
           NO ONE RIDES THE BENCH HERE
         </p>
+
+         {/* Auth Button is under here now */}
+        <div className="mb-8 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+          <div className="relative group">
+            {/* Glow effect behind button */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-500 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-200 animate-pulse"></div>
+            
+            {/* Main button container */}
+            <div className="relative [&_*]:!rounded-full [&_*]:!font-extrabold [&_*]:!uppercase [&_*]:!tracking-widest [&_*]:!text-lg [&_*]:!px-12 [&_*]:!py-4 [&_*]:!shadow-2xl [&_*]:!border-4 [&_*]:transition-all [&_*]:duration-300 [&_*]:hover:scale-110 [&_*]:hover:shadow-xl [&_a]:!text-black [&_a]:!bg-yellow-400 [&_a]:!border-black [&_a]:hover:!bg-white [&_a]:hover:!border-yellow-400 [&_a]:hover:!text-black [&_*]:!transform [&_*]:active:scale-95">
+              <AuthButton />
+            </div>
+          </div>
+        </div>
         
         {/* Dashboard Access Button for Logged-in Users */}
         {!loading && user && (
