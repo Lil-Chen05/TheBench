@@ -78,6 +78,71 @@ export class BasketballAPI {
       return [];
     }
   }
+
+  // NEW: Get games in date range for efficient caching
+  static async getGamesInDateRange(
+    startDate: string,
+    endDate: string,
+    seasonId?: number,
+    limit: number = 100
+  ): Promise<GameWithTeams[]> {
+    try {
+      let query = supabase
+        .from('games')
+        .select(`
+          *,
+          home_team:games_home_team_id_fkey(*),
+          away_team:games_away_team_id_fkey(*),
+          season:games_season_id_fkey(*)
+        `)
+        .gte('game_date', startDate)
+        .lte('game_date', endDate)
+        .order('game_date', { ascending: false })
+        .limit(limit);
+
+      if (seasonId) {
+        query = query.eq('season_id', seasonId);
+      }
+
+      const { data, error } = await query;
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error fetching games in date range:', error);
+      return [];
+    }
+  }
+
+  // NEW: Get games with pagination for historical data
+  static async getGamesPaginated(
+    offset: number,
+    limit: number,
+    seasonId?: number
+  ): Promise<GameWithTeams[]> {
+    try {
+      let query = supabase
+        .from('games')
+        .select(`
+          *,
+          home_team:games_home_team_id_fkey(*),
+          away_team:games_away_team_id_fkey(*),
+          season:games_season_id_fkey(*)
+        `)
+        .order('game_date', { ascending: false })
+        .range(offset, offset + limit - 1);
+
+      if (seasonId) {
+        query = query.eq('season_id', seasonId);
+      }
+
+      const { data, error } = await query;
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error fetching paginated games:', error);
+      return [];
+    }
+  }
   
 
   // Get upcoming games
@@ -289,6 +354,105 @@ export class BasketballAPI {
     } catch (error) {
       console.error('Error fetching user favorite teams:', error);
       return [];
+    }
+  }
+
+  // NEW: Get games using optimized view
+  static async getGamesFromView(seasonId?: number, limit: number = 50): Promise<any[]> {
+    try {
+      let query = supabase
+        .from('active_games_view')
+        .select('*')
+        .order('game_date', { ascending: false })
+        .limit(limit);
+
+      if (seasonId) {
+        query = query.eq('season_id', seasonId);
+      }
+
+      const { data, error } = await query;
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error fetching games from view:', error);
+      return [];
+    }
+  }
+
+  // NEW: Get player performance using optimized view
+  static async getPlayerPerformanceFromView(seasonName?: string, limit: number = 20): Promise<any[]> {
+    try {
+      let query = supabase
+        .from('player_performance_view')
+        .select('*')
+        .order('avg_points', { ascending: false })
+        .limit(limit);
+
+      if (seasonName) {
+        query = query.eq('season_name', seasonName);
+      }
+
+      const { data, error } = await query;
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error fetching player performance from view:', error);
+      return [];
+    }
+  }
+
+  // NEW: Get popular picks using optimized view
+  static async getPopularPicksFromView(limit: number = 20): Promise<any[]> {
+    try {
+      const { data, error } = await supabase
+        .from('popular_picks_view')
+        .select('*')
+        .order('total_picks', { ascending: false })
+        .limit(limit);
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error fetching popular picks from view:', error);
+      return [];
+    }
+  }
+
+  // NEW: Get team performance using optimized view
+  static async getTeamPerformanceFromView(seasonName?: string): Promise<any[]> {
+    try {
+      let query = supabase
+        .from('team_performance_view')
+        .select('*')
+        .order('avg_team_points', { ascending: false });
+
+      if (seasonName) {
+        query = query.eq('season_name', seasonName);
+      }
+
+      const { data, error } = await query;
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error fetching team performance from view:', error);
+      return [];
+    }
+  }
+
+  // NEW: Get user dashboard summary using optimized view
+  static async getUserDashboardSummary(userId: string): Promise<any> {
+    try {
+      const { data, error } = await supabase
+        .from('user_dashboard_view')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error fetching user dashboard summary:', error);
+      return null;
     }
   }
 
