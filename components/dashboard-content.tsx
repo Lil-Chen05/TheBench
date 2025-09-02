@@ -6,6 +6,7 @@ import TeamSportSelectionModal from "@/components/modals/team-sport-selection-mo
 import { useParlayCart } from "@/components/parlay/parlay-context";
 import type { User } from "@supabase/supabase-js";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface UserProfile {
   id: string;
@@ -140,6 +141,52 @@ export default function DashboardContent({ user, profile }: DashboardContentProp
             <pre className="text-xs text-yellow-100 bg-black/30 p-4 rounded border border-yellow-400/20 max-h-32 overflow-auto font-mono">
               {JSON.stringify(user, null, 2)}
             </pre>
+          </div>
+        </div>
+
+        {/* Basketball Database Call-to-Action */}
+        <div className="group relative overflow-hidden">
+          {/* Background with athletic styling */}
+          <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-gray-900/95 to-black/95 group-hover:from-black/90 group-hover:via-gray-800/95 group-hover:to-black/90 transition-all duration-500 rounded-lg"></div>
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-yellow-400/10 via-yellow-400/20 to-yellow-400/10 transition-opacity duration-700 rounded-lg"></div>
+          
+          <div className="relative z-10 p-8 rounded-lg border-2 border-yellow-400/30 shadow-lg group-hover:border-yellow-400/60 transition-all duration-300">
+            <div className="text-center space-y-6">
+              <div className="space-y-2">
+                <h2 className="text-3xl font-black text-yellow-400 pixelated-text uppercase tracking-wide group-hover:text-yellow-300 transition-colors duration-300">
+                  🏀 Canadian Univeristy MBB Directory
+                </h2>
+                <p className="text-yellow-300/80 text-lg font-semibold max-w-2xl mx-auto">
+                  Access comprehensive player data, game statistics, and performance analytics from Canadian university basketball
+                </p>
+              </div>
+              
+              <Link 
+                href="/basketball_search_database"
+                className="inline-flex items-center gap-4 px-8 py-4 bg-gradient-to-r from-yellow-400 to-yellow-300 text-black rounded-xl font-black uppercase tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-400/30 active:scale-95 text-lg group/button"
+              >
+                {/* Hover glow effect */}
+                <div className="absolute inset-0 opacity-0 group-hover/button:opacity-100 bg-gradient-to-r from-yellow-300 to-yellow-200 transition-opacity duration-300 rounded-xl"></div>
+              
+                <span className="pixelated-text relative z-10">Search Player Database</span>
+                <span className="text-2xl transform group-hover/button:translate-x-1 transition-transform duration-200">→</span>
+              </Link>
+              
+              <div className="flex justify-center items-center gap-8 text-sm text-yellow-400/60 font-bold">
+                <div className="flex items-center gap-2">
+                  <span>📊</span>
+                  <span>Game Stats</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span>🏆</span>
+                  <span>Team Records</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span>⚡</span>
+                  <span>Player Performances</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </main>

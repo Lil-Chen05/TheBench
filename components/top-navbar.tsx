@@ -119,6 +119,7 @@ export default function TopNavbar() {
             <div className="absolute inset-0 bg-gradient-to-r from-[#F4D03F] to-[#e6c200] opacity-90"></div>
           )}
         </Link>
+
         <Link 
           href="/contact" 
           className={cn(
