@@ -34,29 +34,6 @@ export default function PlayersList({
   const [sortBy, setSortBy] = useState<string>('name');
   const [sortOrder, setSortOrder] = useState<string>('asc');
 
-  // Load initial data
-  useEffect(() => {
-    loadInitialData();
-  }, []);
-
-  // Load filtered data when filters change
-  useEffect(() => {
-    if (teams.length > 0) {
-      loadPlayers();
-    }
-  }, [selectedTeamId, sortBy, sortOrder, teams]);
-
-  // Debounced search effect
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      if (searchTerm.length >= 2 || searchTerm.length === 0) {
-        loadPlayers();
-      }
-    }, 300);
-
-    return () => clearTimeout(timeoutId);
-  }, [searchTerm]);
-
   const loadPlayers = useCallback(async () => {
     try {
       setError(null);
@@ -106,6 +83,29 @@ export default function PlayersList({
       setLoading(false);
     }
   }, [loadPlayers]);
+
+  // Load initial data
+  useEffect(() => {
+    loadInitialData();
+  }, [loadInitialData]);
+
+  // Load filtered data when filters change
+  useEffect(() => {
+    if (teams.length > 0) {
+      loadPlayers();
+    }
+  }, [selectedTeamId, sortBy, sortOrder, teams, loadPlayers]);
+
+  // Debounced search effect
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (searchTerm.length >= 2 || searchTerm.length === 0) {
+        loadPlayers();
+      }
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm, loadPlayers]);
 
   const sortPlayers = (playersList: PlayerWithTeam[], sortField: string, order: string): PlayerWithTeam[] => {
     return [...playersList].sort((a, b) => {

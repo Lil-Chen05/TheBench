@@ -33,11 +33,6 @@ export default function GamesList({
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCompleted, setFilterCompleted] = useState<boolean | null>(null);
 
-  useEffect(() => {
-    loadGames();
-    loadSeasons();
-  }, [loadGames, selectedSeason, filterCompleted, gameType]);
-
   const loadGames = useCallback(async () => {
     try {
       setLoading(true);
@@ -93,8 +88,11 @@ export default function GamesList({
       setLoading(false);
     }
   }, [selectedSeason, filterCompleted, searchTerm, maxGames]);
-  
-  
+
+  useEffect(() => {
+    loadGames();
+    loadSeasons();
+  }, [loadGames, selectedSeason, filterCompleted, gameType]);
 
   const loadSeasons = async () => {
     try {
