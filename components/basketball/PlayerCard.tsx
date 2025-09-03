@@ -26,7 +26,7 @@ const PlayerCard = React.memo<PlayerCardProps>(({
 
   return (
     <Card 
-      className="bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 hover:border-yellow-400 dark:hover:border-yellow-400 transition-all duration-300 cursor-pointer group"
+      className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-2 border-gray-200 dark:border-gray-700 hover:border-yellow-400 dark:hover:border-yellow-400 hover:shadow-xl transition-all duration-300 cursor-pointer group shadow-lg"
       onClick={handleClick}
     >
       <CardHeader className="pb-3">
@@ -41,19 +41,13 @@ const PlayerCard = React.memo<PlayerCardProps>(({
             
             {/* Player Info */}
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-gray-900 dark:text-white text-lg truncate group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors duration-200">
+              <h3 className="font-semibold text-gray-900 dark:text-white text-lg leading-tight group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors duration-200" style={{wordBreak: 'break-word'}}>
                 {player.name}
               </h3>
               <div className="flex items-center gap-2 mt-1">
                 <Badge 
-                  variant="outline" 
-                  className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs"
-                >
-                  {player.basketballteams.team_name}
-                </Badge>
-                <Badge 
                   variant="secondary" 
-                  className="text-xs bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+                  className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 font-semibold"
                 >
                   {player.basketballteams.abbr}
                 </Badge>
@@ -61,19 +55,7 @@ const PlayerCard = React.memo<PlayerCardProps>(({
             </div>
           </div>
           
-          {/* Status Badge */}
-          <div className="flex flex-col items-end gap-1">
-            <Badge 
-              variant={player.is_active ? "default" : "secondary"}
-              className={`text-xs ${
-                player.is_active 
-                  ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200' 
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
-              }`}
-            >
-              {player.is_active ? 'Active' : 'Inactive'}
-            </Badge>
-          </div>
+
         </div>
       </CardHeader>
 
@@ -89,7 +71,7 @@ const PlayerCard = React.memo<PlayerCardProps>(({
           <Button 
             variant="outline" 
             size="sm" 
-            className="w-full border-yellow-400 text-yellow-600 dark:text-yellow-400 hover:bg-yellow-400 hover:text-black transition-colors duration-200"
+            className="w-full border-yellow-400 text-yellow-600 dark:text-yellow-400 hover:bg-yellow-400 hover:text-black transition-all duration-200 hover:scale-105"
             onClick={(e) => {
               e.stopPropagation();
               handleClick();

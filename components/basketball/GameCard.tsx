@@ -53,7 +53,7 @@ export default function GameCard({ game, showActions = true, onViewProps }: Game
   const status = getGameStatus();
 
   return (
-    <Card className="bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 hover:border-yellow-400 dark:hover:border-yellow-400 transition-all duration-300 hover:shadow-lg">
+    <Card className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-2 border-gray-200 dark:border-gray-700 hover:border-yellow-400 dark:hover:border-yellow-400 transition-all duration-300 hover:shadow-xl shadow-lg">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -153,7 +153,7 @@ export default function GameCard({ game, showActions = true, onViewProps }: Game
           <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
             <Button 
               onClick={() => onViewProps?.(game.id)}
-              className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold"
+              className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold transition-all duration-200 hover:scale-105"
             >
               View Player Props
             </Button>
@@ -161,14 +161,14 @@ export default function GameCard({ game, showActions = true, onViewProps }: Game
             <div className="flex gap-2">
               <Button 
                 variant="outline" 
-                className="flex-1"
+                className="flex-1 border-yellow-400 text-yellow-600 dark:text-yellow-400 hover:bg-yellow-400 hover:text-black transition-colors duration-200"
                 onClick={() => setIsFavorite(!isFavorite)}
               >
                 {isFavorite ? '❤️' : '🤍'} Favorite
               </Button>
               
               <Link href={`/dashboard/basketball/game/${game.id}`} className="flex-1">
-                <Button variant="outline" className="w-full">
+                <Button variant="outline" className="w-full border-blue-400 text-blue-600 dark:text-blue-400 hover:bg-blue-400 hover:text-white transition-colors duration-200">
                   Game Details
                 </Button>
               </Link>

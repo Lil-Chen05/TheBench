@@ -118,7 +118,7 @@ export default function GamesList({
 
   if (loading && games.length === 0) {
     return (
-      <Card className="bg-white dark:bg-gray-900">
+      <Card className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg">
         <CardContent className="flex items-center justify-center p-8">
           <div className="flex items-center gap-3">
             <RefreshCw className="w-6 h-6 animate-spin text-yellow-400" />
@@ -131,10 +131,10 @@ export default function GamesList({
 
   if (error) {
     return (
-      <Card className="bg-white dark:bg-gray-900 border-red-200 dark:border-red-800">
+      <Card className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-red-200 dark:border-red-800 shadow-lg">
         <CardContent className="p-6 text-center">
           <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
-          <Button onClick={handleRefresh} variant="outline">
+          <Button onClick={handleRefresh} variant="outline" className="border-red-400 text-red-600 dark:text-red-400 hover:bg-red-400 hover:text-white transition-colors duration-200">
             Try Again
           </Button>
         </CardContent>
@@ -168,9 +168,9 @@ export default function GamesList({
 
       {/* Filters */}
       {showFilters && (
-        <Card className="bg-white dark:bg-gray-900">
+        <Card className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-yellow-400/30 shadow-lg">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
+            <CardTitle className="flex items-center gap-2 text-lg text-white dark:text-white">
               <Filter className="w-5 h-5" />
               Filters
             </CardTitle>
@@ -179,7 +179,7 @@ export default function GamesList({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Search */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label className="text-sm font-medium text-white dark:text-white">
                   Search Teams
                 </label>
                 <div className="relative">
@@ -195,11 +195,11 @@ export default function GamesList({
 
               {/* Season Filter */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label className="text-sm font-medium text-white dark:text-white">
                   Season
                 </label>
                 <Select value={selectedSeason} onValueChange={setSelectedSeason}>
-                  <SelectTrigger>
+                  <SelectTrigger className="text-white">
                     <SelectValue placeholder="All Seasons" />
                   </SelectTrigger>
                   <SelectContent>
@@ -215,7 +215,7 @@ export default function GamesList({
 
               {/* Game Status Filter */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label className="text-sm font-medium text-white dark:text-white">
                   Game Status
                 </label>
                 <Select 
@@ -225,7 +225,7 @@ export default function GamesList({
                     else setFilterCompleted(value === 'true');
                   }}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="text-white">
                     <SelectValue placeholder="All Games" />
                   </SelectTrigger>
                   <SelectContent>
@@ -242,7 +242,7 @@ export default function GamesList({
 
       {/* Games Grid */}
       {games.length === 0 ? (
-        <Card className="bg-white dark:bg-gray-900">
+        <Card className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg">
           <CardContent className="p-8 text-center">
             <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
@@ -251,7 +251,7 @@ export default function GamesList({
             <p className="text-gray-600 dark:text-gray-400 mb-4">
               Try adjusting your filters or search terms.
             </p>
-            <Button onClick={handleRefresh} variant="outline">
+            <Button onClick={handleRefresh} variant="outline" className="border-yellow-400 text-yellow-600 dark:text-yellow-400 hover:bg-yellow-400 hover:text-black transition-colors duration-200">
               Reset Filters
             </Button>
           </CardContent>
@@ -271,7 +271,7 @@ export default function GamesList({
       {/* Load More Button */}
       {games.length >= maxGames && (
         <div className="text-center">
-          <Button variant="outline" onClick={handleRefresh}>
+          <Button variant="outline" onClick={handleRefresh} className="border-yellow-400 text-yellow-600 dark:text-yellow-400 hover:bg-yellow-400 hover:text-black transition-colors duration-200">
             Load More Games
           </Button>
         </div>

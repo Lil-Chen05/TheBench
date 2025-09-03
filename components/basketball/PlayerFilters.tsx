@@ -41,25 +41,25 @@ const PlayerFilters: React.FC<PlayerFiltersProps> = ({
   const hasActiveFilters = searchTerm || selectedTeamId !== 'all' || sortBy !== 'name' || sortOrder !== 'asc';
 
   return (
-    <Card className="bg-white dark:bg-gray-900 border-yellow-400/30">
+    <Card className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-yellow-400/30 shadow-lg">
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-lg">
+          <CardTitle className="flex items-center gap-2 text-lg text-white dark:text-white">
             <Filter className="w-5 h-5" />
             Filters & Search
           </CardTitle>
           
           <div className="flex items-center gap-2">
             {hasActiveFilters && (
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={onClearFilters}
-                className="border-red-400 text-red-600 dark:text-red-400 hover:bg-red-400 hover:text-white"
-              >
-                <X className="w-4 h-4 mr-1" />
-                Clear
-              </Button>
+                          <Button 
+              variant="outline" 
+              size="sm"
+              onClick={onClearFilters}
+              className="border-red-400 text-red-600 dark:text-red-400 hover:bg-red-400 hover:text-white transition-colors duration-200"
+            >
+              <X className="w-4 h-4 mr-1" />
+              Clear
+            </Button>
             )}
             
             <Button 
@@ -67,7 +67,7 @@ const PlayerFilters: React.FC<PlayerFiltersProps> = ({
               size="sm"
               onClick={onRefresh}
               disabled={isLoading}
-              className="border-yellow-400 text-yellow-600 dark:text-yellow-400 hover:bg-yellow-400 hover:text-black"
+              className="border-yellow-400 text-yellow-600 dark:text-yellow-400 hover:bg-yellow-400 hover:text-black transition-colors duration-200"
             >
               <RefreshCw className={`w-4 h-4 mr-1 ${isLoading ? 'animate-spin' : ''}`} />
               Refresh
@@ -80,7 +80,7 @@ const PlayerFilters: React.FC<PlayerFiltersProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Search Input */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="text-sm font-medium text-white dark:text-white">
               Search Players
             </label>
             <div className="relative">
@@ -97,11 +97,11 @@ const PlayerFilters: React.FC<PlayerFiltersProps> = ({
 
           {/* Team Filter */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="text-sm font-medium text-white dark:text-white">
               Filter by Team
             </label>
             <Select value={selectedTeamId} onValueChange={onTeamChange} disabled={isLoading}>
-              <SelectTrigger>
+              <SelectTrigger className="text-white">
                 <SelectValue placeholder="All Teams" />
               </SelectTrigger>
               <SelectContent>
@@ -117,11 +117,11 @@ const PlayerFilters: React.FC<PlayerFiltersProps> = ({
 
           {/* Sort By */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="text-sm font-medium text-white dark:text-white">
               Sort By
             </label>
             <Select value={sortBy} onValueChange={onSortByChange} disabled={isLoading}>
-              <SelectTrigger>
+              <SelectTrigger className="text-white">
                 <SelectValue placeholder="Sort by..." />
               </SelectTrigger>
               <SelectContent>
@@ -134,11 +134,11 @@ const PlayerFilters: React.FC<PlayerFiltersProps> = ({
 
           {/* Sort Order */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="text-sm font-medium text-white dark:text-white">
               Sort Order
             </label>
             <Select value={sortOrder} onValueChange={onSortOrderChange} disabled={isLoading}>
-              <SelectTrigger>
+              <SelectTrigger className="text-white">
                 <SelectValue placeholder="Order..." />
               </SelectTrigger>
               <SelectContent>
