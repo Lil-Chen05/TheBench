@@ -94,11 +94,11 @@ export default function PlayerStatsCard({
               </CardTitle>
               <div className="flex items-center gap-2 mt-1">
                 <Badge variant="outline" className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
-                  {player.team.team_name}
+                  {player.basketballteams.team_name}
                 </Badge>
-                {player.team.conference && (
+                {player.basketballteams.conference && (
                   <Badge variant="secondary" className="text-xs">
-                    {player.team.conference}
+                    {player.basketballteams.conference}
                   </Badge>
                 )}
               </div>
