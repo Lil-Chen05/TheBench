@@ -118,7 +118,7 @@ export class BasketballAPI {
         .from('players')
         .select(`
           *,
-          team:basketballteams(*)
+          basketballteams!players_team_id_fkey(*)
         `)
         .eq('team_id', teamId)
         .eq('is_active', true)
@@ -335,7 +335,7 @@ export class BasketballAPI {
         .from('players')
         .select(`
           *,
-          team:basketballteams(*)
+          basketballteams!players_team_id_fkey(*)
         `)
         .ilike('name', `%${searchTerm}%`)
         .eq('is_active', true)

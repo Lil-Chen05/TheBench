@@ -118,8 +118,8 @@ export default function PlayersList({
           bValue = b.jersey_number || 0;
           break;
         case 'team_name':
-          aValue = a.team.team_name;
-          bValue = b.team.team_name;
+          aValue = a.basketballteams.team_name;
+          bValue = b.basketballteams.team_name;
           break;
         default: // name
           aValue = a.name;
