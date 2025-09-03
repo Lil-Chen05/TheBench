@@ -37,12 +37,6 @@ export default function PlayerStatsCard({
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
 
-  useEffect(() => {
-    if (player.id) {
-      loadPlayerData();
-    }
-  }, [player.id, loadPlayerData]);
-
   const loadPlayerData = useCallback(async () => {
     setLoading(true);
     try {
@@ -65,6 +59,12 @@ export default function PlayerStatsCard({
       setLoading(false);
     }
   }, [player.id, showProps]);
+
+  useEffect(() => {
+    if (player.id) {
+      loadPlayerData();
+    }
+  }, [player.id, loadPlayerData]);
 
   const getStatColor = (value: number, average: number) => {
     if (value > average * 1.2) return 'text-green-600 dark:text-green-400';
