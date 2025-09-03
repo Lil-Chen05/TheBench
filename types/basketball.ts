@@ -3,11 +3,13 @@
 export interface BasketballTeam {
   id: number;
   team_name: string;
-  abbreviation: string;
+  abbr: string;
+  city: string;
+  province: string;
   conference?: string;
   division?: string;
-  is_active: boolean;
-  created_at: string;
+  is_active?: boolean;
+  created_at?: string;
 }
 
 export interface Player {

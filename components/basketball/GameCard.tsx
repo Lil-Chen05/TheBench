@@ -83,7 +83,7 @@ export default function GameCard({ game, showActions = true, onViewProps }: Game
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center">
                 <span className="text-black font-bold text-sm">
-                  {game.home_team.abbreviation}
+                  {game.home_team.abbr}
                 </span>
               </div>
               <div>
@@ -114,7 +114,7 @@ export default function GameCard({ game, showActions = true, onViewProps }: Game
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
                 <span className="text-white font-bold text-sm">
-                  {game.away_team.abbreviation}
+                  {game.away_team.abbr}
                 </span>
               </div>
               <div>
