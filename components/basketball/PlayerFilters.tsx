@@ -159,7 +159,7 @@ const PlayerFilters: React.FC<PlayerFiltersProps> = ({
               
               {searchTerm && (
                 <Badge variant="secondary" className="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200">
-                  Search: "{searchTerm}"
+                  Search: &quot;{searchTerm}&quot;
                 </Badge>
               )}
               

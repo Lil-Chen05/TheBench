@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -41,9 +41,9 @@ export default function PlayerStatsCard({
     if (player.id) {
       loadPlayerData();
     }
-  }, [player.id]);
+  }, [player.id, loadPlayerData]);
 
-  const loadPlayerData = async () => {
+  const loadPlayerData = useCallback(async () => {
     setLoading(true);
     try {
       // Load season averages
@@ -64,7 +64,7 @@ export default function PlayerStatsCard({
     } finally {
       setLoading(false);
     }
-  };
+  }, [player.id, showProps]);
 
   const getStatColor = (value: number, average: number) => {
     if (value > average * 1.2) return 'text-green-600 dark:text-green-400';

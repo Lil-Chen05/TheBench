@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Users, RefreshCw, AlertCircle, Search } from 'lucide-react';
+import { RefreshCw, AlertCircle, Search } from 'lucide-react';
 import { PlayerWithTeam, BasketballTeam } from '@/types/basketball';
 import { BasketballAPI } from '@/lib/basketball-api';
 import PlayerCard from './PlayerCard';
@@ -57,26 +57,7 @@ export default function PlayersList({
     return () => clearTimeout(timeoutId);
   }, [searchTerm]);
 
-  const loadInitialData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      // Load teams for filter dropdown
-      const teamsData = await BasketballAPI.getAllBasketballTeams();
-      setTeams(teamsData);
-      
-      // Load initial players
-      await loadPlayers();
-    } catch (err) {
-      setError('Failed to load data. Please try again.');
-      console.error('Error loading initial data:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const loadPlayers = async () => {
+  const loadPlayers = useCallback(async () => {
     try {
       setError(null);
       
@@ -105,7 +86,26 @@ export default function PlayersList({
       setError('Failed to load players. Please try again.');
       console.error('Error loading players:', err);
     }
-  };
+  }, [searchTerm, selectedTeamId, sortBy, sortOrder, maxPlayers]);
+
+  const loadInitialData = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Load teams for filter dropdown
+      const teamsData = await BasketballAPI.getAllBasketballTeams();
+      setTeams(teamsData);
+      
+      // Load initial players
+      await loadPlayers();
+    } catch (err) {
+      setError('Failed to load data. Please try again.');
+      console.error('Error loading initial data:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, [loadPlayers]);
 
   const sortPlayers = (playersList: PlayerWithTeam[], sortField: string, order: string): PlayerWithTeam[] => {
     return [...playersList].sort((a, b) => {
