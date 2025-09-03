@@ -348,4 +348,85 @@ export class BasketballAPI {
       return [];
     }
   }
+
+  // Get all players with team information
+  static async getAllPlayersWithTeams(): Promise<PlayerWithTeam[]> {
+    try {
+      const { data, error } = await supabase
+        .from('players')
+        .select(`
+          *,
+          basketballteams!players_team_id_fkey(*)
+        `)
+        .eq('is_active', true)
+        .eq('sport_id', 1) // Basketball sport ID
+        .order('name');
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error fetching all players:', error);
+      return [];
+    }
+  }
+
+  // Get all basketball teams for filter dropdown
+  static async getAllBasketballTeams(): Promise<BasketballTeam[]> {
+    try {
+      const { data, error } = await supabase
+        .from('basketballteams')
+        .select('*')
+        .order('team_name');
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error fetching basketball teams:', error);
+      return [];
+    }
+  }
+
+  // Search players by name with team info
+  static async searchPlayersByName(searchTerm: string): Promise<PlayerWithTeam[]> {
+    try {
+      const { data, error } = await supabase
+        .from('players')
+        .select(`
+          *,
+          basketballteams!players_team_id_fkey(*)
+        `)
+        .ilike('name', `%${searchTerm}%`)
+        .eq('is_active', true)
+        .eq('sport_id', 1) // Basketball sport ID
+        .limit(20);
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error searching players by name:', error);
+      return [];
+    }
+  }
+
+  // Get players by team ID
+  static async getPlayersByTeamId(teamId: number): Promise<PlayerWithTeam[]> {
+    try {
+      const { data, error } = await supabase
+        .from('players')
+        .select(`
+          *,
+          basketballteams!players_team_id_fkey(*)
+        `)
+        .eq('team_id', teamId)
+        .eq('is_active', true)
+        .eq('sport_id', 1) // Basketball sport ID
+        .order('name');
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error fetching players by team:', error);
+      return [];
+    }
+  }
 }

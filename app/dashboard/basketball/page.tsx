@@ -336,6 +336,31 @@ export default function BasketballDashboardPage() {
 
             {/* Players Tab */}
             <TabsContent value="players" className="space-y-6">
+              {/* Quick Actions */}
+              <Card className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-yellow-400/30">
+                <CardHeader>
+                  <CardTitle className="text-xl text-gray-900 dark:text-white">
+                    Player Management
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Link href="/dashboard/basketball/players">
+                      <Button className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold">
+                        <Users className="w-4 h-4 mr-2" />
+                        Browse All Players
+                      </Button>
+                    </Link>
+                    
+                    <Button variant="outline" className="w-full border-blue-400 text-blue-600 dark:text-blue-400 hover:bg-blue-400 hover:text-white">
+                      <Target className="w-4 h-4 mr-2" />
+                      Player Statistics
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Top Performers Preview */}
               <Card className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-yellow-400/30">
                 <CardHeader>
                   <CardTitle className="text-xl text-gray-900 dark:text-white">
@@ -377,6 +402,14 @@ export default function BasketballDashboardPage() {
                       <p className="text-gray-600 dark:text-gray-400">No player data available</p>
                     </div>
                   )}
+                  
+                  <div className="mt-4 text-center">
+                    <Link href="/dashboard/basketball/players">
+                      <Button variant="outline" className="border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black">
+                        View All Players
+                      </Button>
+                    </Link>
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>

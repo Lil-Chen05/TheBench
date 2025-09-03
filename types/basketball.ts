@@ -103,7 +103,7 @@ export interface GameWithTeams extends Game {
 }
 
 export interface PlayerWithTeam extends Player {
-  team: BasketballTeam;
+  basketballteams: BasketballTeam;
 }
 
 export interface PlayerStatsWithGame extends PlayerGameStats {
