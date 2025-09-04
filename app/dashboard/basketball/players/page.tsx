@@ -127,7 +127,7 @@ export default function BasketballPlayersPage() {
           <PlayersList 
             title="Basketball Players"
             showFilters={true}
-            maxPlayers={50}
+            playersPerPage={20}
             onPlayerClick={handlePlayerClick}
           />
         </div>

@@ -4,13 +4,9 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Trophy, 
-  Calendar, 
-  ArrowLeft,
-  Filter,
-  RefreshCw
+  ArrowLeft
 } from "lucide-react";
 import { User } from "@supabase/supabase-js";
 import { BasketballAPI } from "@/lib/basketball-api";
@@ -22,7 +18,6 @@ export default function BasketballGamesPage() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [seasons, setSeasons] = useState<Season[]>([]);
-  const [activeTab, setActiveTab] = useState('upcoming');
   
   const supabase = createClient();
 
@@ -132,69 +127,20 @@ export default function BasketballGamesPage() {
 
         {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-3 bg-black/50 border border-yellow-400/30">
-              <TabsTrigger value="upcoming" className="data-[state=active]:bg-yellow-400 data-[state=active]:text-black">
-                <Calendar className="w-4 h-4 mr-2" />
-                Upcoming
-              </TabsTrigger>
-              <TabsTrigger value="recent" className="data-[state=active]:bg-yellow-400 data-[state=active]:text-black">
-                <RefreshCw className="w-4 h-4 mr-2" />
-                Recent
-              </TabsTrigger>
-              <TabsTrigger value="all" className="data-[state=active]:bg-yellow-400 data-[state=active]:text-black">
-                <Filter className="w-4 h-4 mr-2" />
-                All Games
-              </TabsTrigger>
-            </TabsList>
-
-            {/* Upcoming Games Tab */}
-            <TabsContent value="upcoming" className="space-y-6">
-              
-              
-              <GamesList 
-                title="Upcoming Basketball Games" 
-                showFilters={true} 
-                maxGames={30}
-                gameType="upcoming"
-              />
-            </TabsContent>
-
-            {/* Recent Games Tab */}
-            <TabsContent value="recent" className="space-y-6">
-              <div className="text-center mb-6">
-                <h2 className="text-3xl font-bold text-white mb-2">Recent Games</h2>
-                <p className="text-yellow-300/80">
-                  View recently completed games and final scores
-                </p>
-              </div>
-              
-              <GamesList 
-                title="Recent Basketball Games" 
-                showFilters={true} 
-                maxGames={30}
-                gameType="recent"
-              />
-            </TabsContent>
-
-            {/* All Games Tab */}
-            <TabsContent value="all" className="space-y-6">
-              <div className="text-center mb-6">
-                <h2 className="text-3xl font-bold text-white mb-2">All Games</h2>
-                <p className="text-yellow-300/80">
-                  Browse all basketball games across all seasons
-                </p>
-              </div>
-              
-              <GamesList 
-                title="All Basketball Games" 
-                showFilters={true} 
-                maxGames={50}
-                gameType="all"
-              />
-            </TabsContent>
-          </Tabs>
-
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-3xl font-bold text-white mb-2">Basketball Games</h2>
+              <p className="text-yellow-300/80">
+                Browse basketball games and view player props
+              </p>
+            </div>
+            
+            <GamesList 
+              title="Basketball Games" 
+              showFilters={true} 
+              gamesPerPage={20}
+            />
+          </div>
           {/* Quick Stats */}
           <div className="mt-12">
             <Card className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-yellow-400/30 shadow-lg">

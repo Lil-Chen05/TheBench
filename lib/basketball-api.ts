@@ -78,6 +78,64 @@ export class BasketballAPI {
       return [];
     }
   }
+
+  // Get games with pagination
+  static async getGamesPaginated(
+    page: number = 1, 
+    pageSize: number = 20, 
+    seasonId?: number,
+    searchTerm?: string,
+    filterCompleted?: boolean | null
+  ): Promise<{ games: GameWithTeams[], totalCount: number, totalPages: number }> {
+    try {
+      const offset = (page - 1) * pageSize;
+      
+      let query = supabase
+        .from('games')
+        .select(`
+            *,
+            home_team:games_home_team_id_fkey(*),
+            away_team:games_away_team_id_fkey(*),
+            season:games_season_id_fkey(*)
+          `, { count: 'exact' })
+        .order('game_date', { ascending: false })
+        .range(offset, offset + pageSize - 1);
+
+      // Apply filters
+      if (seasonId) {
+        query = query.eq('season_id', seasonId);
+      }
+
+      if (filterCompleted !== null) {
+        query = query.eq('is_completed', filterCompleted);
+      }
+
+      if (searchTerm && searchTerm.trim()) {
+        // Search in team names
+        query = query.or(`home_team.team_name.ilike.%${searchTerm}%,away_team.team_name.ilike.%${searchTerm}%`);
+      }
+
+      const { data, error, count } = await query;
+
+      if (error) throw error;
+
+      const totalCount = count || 0;
+      const totalPages = Math.ceil(totalCount / pageSize);
+
+      return {
+        games: data || [],
+        totalCount,
+        totalPages
+      };
+    } catch (error) {
+      console.error('Error fetching paginated games:', error);
+      return {
+        games: [],
+        totalCount: 0,
+        totalPages: 0
+      };
+    }
+  }
   
 
   // Get upcoming games
@@ -274,18 +332,36 @@ export class BasketballAPI {
   // Get user's favorite teams
   static async getUserFavoriteTeams(userId: string): Promise<BasketballTeam[]> {
     try {
-      const { data, error } = await supabase
-        .from('user_favorite_teams')
-        .select(`
-          team_id,
-          basketballteams(*)
-        `)
-        .eq('user_id', userId)
-        .eq('sport_id', 1);
+      // Get user's favorite team IDs from profiles table
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('favorite_teams')
+        .eq('id', userId)
+        .single();
 
-      if (error) throw error;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return data?.map((item: any) => item.basketballteams).filter(Boolean) || [];
+      if (profileError) {
+        console.error('Error fetching user profile:', profileError);
+        return [];
+      }
+
+      const favoriteTeamIds = profile.favorite_teams || [];
+      
+      if (favoriteTeamIds.length === 0) {
+        return [];
+      }
+
+      // Get team details for favorite team IDs
+      const { data: teams, error: teamsError } = await supabase
+        .from('basketballteams')
+        .select('*')
+        .in('id', favoriteTeamIds.map((id: string) => parseInt(id)));
+
+      if (teamsError) {
+        console.error('Error fetching favorite teams:', teamsError);
+        return [];
+      }
+
+      return teams || [];
     } catch (error) {
       console.error('Error fetching user favorite teams:', error);
       return [];
@@ -367,6 +443,73 @@ export class BasketballAPI {
     } catch (error) {
       console.error('Error fetching all players:', error);
       return [];
+    }
+  }
+
+  // Get players with pagination
+  static async getPlayersPaginated(
+    page: number = 1,
+    pageSize: number = 20,
+    teamId?: number,
+    searchTerm?: string,
+    sortBy: string = 'name',
+    sortOrder: string = 'asc'
+  ): Promise<{ players: PlayerWithTeam[], totalCount: number, totalPages: number }> {
+    try {
+      const offset = (page - 1) * pageSize;
+      
+      let query = supabase
+        .from('players')
+        .select(`
+          *,
+          basketballteams!players_team_id_fkey(*)
+        `, { count: 'exact' })
+        .eq('is_active', true)
+        .eq('sport_id', 1) // Basketball sport ID
+        .range(offset, offset + pageSize - 1);
+
+      // Apply filters
+      if (teamId) {
+        query = query.eq('team_id', teamId);
+      }
+
+      if (searchTerm && searchTerm.trim()) {
+        // Search in player names
+        query = query.ilike('name', `%${searchTerm}%`);
+      }
+
+      // Apply sorting
+      const ascending = sortOrder === 'asc';
+      switch (sortBy) {
+        case 'jersey_number':
+          query = query.order('jersey_number', { ascending });
+          break;
+        case 'team_name':
+          query = query.order('basketballteams(team_name)', { ascending });
+          break;
+        default: // name
+          query = query.order('name', { ascending });
+      }
+
+      const { data, error, count } = await query;
+
+      if (error) throw error;
+
+      const totalCount = count || 0;
+      const totalPages = Math.ceil(totalCount / pageSize);
+
+      return {
+        players: data || [],
+        totalCount,
+        totalPages
+      };
+    } catch (error) {
+      console.error('Error fetching paginated players:', error);
+      return {
+        players: [],
+        totalCount: 0,
+        totalPages: 0
+      };
     }
   }
 

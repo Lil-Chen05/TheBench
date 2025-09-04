@@ -19,10 +19,11 @@ import {
   GameWithTeams, 
   Season, 
   TopPerformer, 
-  FavoriteTeamGame,
   BasketballTeam 
 } from "@/types/basketball";
 import GamesList from "@/components/basketball/GamesList";
+import FavoritesTab from "@/components/basketball/FavoritesTab";
+import TeamsList from "@/components/basketball/TeamsList";
 import Link from "next/link";
 
 export default function BasketballDashboardPage() {
@@ -30,7 +31,6 @@ export default function BasketballDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [upcomingGames, setUpcomingGames] = useState<GameWithTeams[]>([]);
   const [topPerformers, setTopPerformers] = useState<TopPerformer[]>([]);
-  const [favoriteTeamGames, setFavoriteTeamGames] = useState<FavoriteTeamGame[]>([]);
   const [favoriteTeams, setFavoriteTeams] = useState<BasketballTeam[]>([]);
   const [seasons, setSeasons] = useState<Season[]>([]);
   const [activeTab, setActiveTab] = useState('overview');
@@ -85,11 +85,6 @@ export default function BasketballDashboardPage() {
       const teams = await BasketballAPI.getUserFavoriteTeams(userId);
       setFavoriteTeams(teams);
 
-      // Load favorite team games
-      if (teams.length > 0) {
-        const favoriteGames = await BasketballAPI.getFavoriteTeamGames(userId, 7);
-        setFavoriteTeamGames(favoriteGames);
-      }
 
       // Load seasons
       const seasonsData = await BasketballAPI.getSeasons();
@@ -162,7 +157,7 @@ export default function BasketballDashboardPage() {
         {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4 bg-black/50 border border-yellow-400/30">
+            <TabsList className="grid w-full grid-cols-5 bg-black/50 border border-yellow-400/30">
               <TabsTrigger value="overview" className="data-[state=active]:bg-yellow-400 data-[state=active]:text-black">
                 Overview
               </TabsTrigger>
@@ -171,6 +166,9 @@ export default function BasketballDashboardPage() {
               </TabsTrigger>
               <TabsTrigger value="players" className="data-[state=active]:bg-yellow-400 data-[state=active]:text-black">
                 Players
+              </TabsTrigger>
+              <TabsTrigger value="teams" className="data-[state=active]:bg-yellow-400 data-[state=active]:text-black">
+                Teams
               </TabsTrigger>
               <TabsTrigger value="favorites" className="data-[state=active]:bg-yellow-400 data-[state=active]:text-black">
                 Favorites
@@ -181,69 +179,69 @@ export default function BasketballDashboardPage() {
             <TabsContent value="overview" className="space-y-6">
               {/* Stats Overview */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <Card className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-yellow-400/30">
+                <Card className="bg-black border-yellow-400/30 border-yellow-400/30">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    <CardTitle className="text-sm font-medium text-gray-300">
                       Upcoming Games
                     </CardTitle>
                     <Calendar className="h-4 w-4 text-yellow-400" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <div className="text-2xl font-bold text-white">
                       {upcomingGames.length}
                     </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                    <p className="text-xs text-gray-300">
                       Next 7 days
                     </p>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-yellow-400/30">
+                <Card className="bg-black border-yellow-400/30 border-yellow-400/30">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    <CardTitle className="text-sm font-medium text-gray-300">
                       Favorite Teams
                     </CardTitle>
                     <Star className="h-4 w-4 text-yellow-400" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <div className="text-2xl font-bold text-white">
                       {favoriteTeams.length}
                     </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                    <p className="text-xs text-gray-300">
                       Following
                     </p>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-yellow-400/30">
+                <Card className="bg-black border-yellow-400/30 border-yellow-400/30">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    <CardTitle className="text-sm font-medium text-gray-300">
                       Top Scorer
                     </CardTitle>
                     <Target className="h-4 w-4 text-yellow-400" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <div className="text-2xl font-bold text-white">
                       {topPerformers[0]?.avg_stat || 'N/A'}
                     </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                    <p className="text-xs text-gray-300">
                       {topPerformers[0]?.player_name || 'No data'}
                     </p>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-yellow-400/30">
+                <Card className="bg-black border-yellow-400/30 border-yellow-400/30">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    <CardTitle className="text-sm font-medium text-gray-300">
                       Seasons
                     </CardTitle>
                     <Trophy className="h-4 w-4 text-yellow-400" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <div className="text-2xl font-bold text-white">
                       {seasons.length}
                     </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                    <p className="text-xs text-gray-300">
                       Available
                     </p>
                   </CardContent>
@@ -251,9 +249,9 @@ export default function BasketballDashboardPage() {
               </div>
 
               {/* Quick Actions */}
-              <Card className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-yellow-400/30">
+              <Card className="bg-black border-yellow-400/30 border-yellow-400/30">
                 <CardHeader>
-                  <CardTitle className="text-xl text-gray-900 dark:text-white">
+                  <CardTitle className="text-xl text-white">
                     Quick Actions
                   </CardTitle>
                 </CardHeader>
@@ -273,10 +271,10 @@ export default function BasketballDashboardPage() {
                       </Button>
                     </Link>
                     
-                    <Link href="/dashboard/basketball/teams">
+                    <Link href="/dashboard/basketball/standings">
                       <Button className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold">
                         <Trophy className="w-4 h-4 mr-2" />
-                        Manage Teams
+                        View Standings
                       </Button>
                     </Link>
                   </div>
@@ -285,9 +283,9 @@ export default function BasketballDashboardPage() {
 
               {/* Upcoming Games Preview */}
               {upcomingGames.length > 0 && (
-                <Card className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-yellow-400/30">
+                <Card className="bg-black border-yellow-400/30 border-yellow-400/30">
                   <CardHeader>
-                    <CardTitle className="text-xl text-gray-900 dark:text-white">
+                    <CardTitle className="text-xl text-white">
                       Upcoming Games
                     </CardTitle>
                   </CardHeader>
@@ -296,14 +294,14 @@ export default function BasketballDashboardPage() {
                       {upcomingGames.slice(0, 6).map((game) => (
                         <div key={game.id} className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                           <div className="flex items-center justify-between mb-2">
-                            <span className="text-sm font-medium text-gray-900 dark:text-white">
+                            <span className="text-sm font-medium text-white">
                               {new Date(game.game_date).toLocaleDateString()}
                             </span>
                             <Badge variant="outline" className="text-xs">
                               {game.season.name}
                             </Badge>
                           </div>
-                          <div className="text-sm text-gray-600 dark:text-gray-400">
+                          <div className="text-sm text-gray-300">
                             <div>{game.home_team.team_name} vs {game.away_team.team_name}</div>
                             {game.location && (
                               <div className="text-xs text-gray-500 mt-1">{game.location}</div>
@@ -329,17 +327,16 @@ export default function BasketballDashboardPage() {
               <GamesList 
                 title="Basketball Games" 
                 showFilters={true} 
-                maxGames={20}
-                gameType="upcoming"
+                gamesPerPage={20}
               />
             </TabsContent>
 
             {/* Players Tab */}
             <TabsContent value="players" className="space-y-6">
               {/* Quick Actions */}
-              <Card className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-yellow-400/30">
+              <Card className="bg-black border-yellow-400/30 border-yellow-400/30">
                 <CardHeader>
-                  <CardTitle className="text-xl text-gray-900 dark:text-white">
+                  <CardTitle className="text-xl text-white">
                     Player Management
                   </CardTitle>
                 </CardHeader>
@@ -361,9 +358,9 @@ export default function BasketballDashboardPage() {
               </Card>
 
               {/* Top Performers Preview */}
-              <Card className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-yellow-400/30">
+              <Card className="bg-black border-yellow-400/30 border-yellow-400/30">
                 <CardHeader>
-                  <CardTitle className="text-xl text-gray-900 dark:text-white">
+                  <CardTitle className="text-xl text-white">
                     Top Performers
                   </CardTitle>
                 </CardHeader>
@@ -377,10 +374,10 @@ export default function BasketballDashboardPage() {
                               <span className="text-black font-bold text-sm">{index + 1}</span>
                             </div>
                             <div>
-                              <div className="font-semibold text-gray-900 dark:text-white">
+                              <div className="font-semibold text-white">
                                 {player.player_name}
                               </div>
-                              <div className="text-sm text-gray-600 dark:text-gray-400">
+                              <div className="text-sm text-gray-300">
                                 {player.team_name} • {player.games_played} games
                               </div>
                             </div>
@@ -389,7 +386,7 @@ export default function BasketballDashboardPage() {
                             <div className="text-lg font-bold text-yellow-600 dark:text-yellow-400">
                               {player.avg_stat} pts
                             </div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">
+                            <div className="text-sm text-gray-300">
                               Avg per game
                             </div>
                           </div>
@@ -399,7 +396,7 @@ export default function BasketballDashboardPage() {
                   ) : (
                     <div className="text-center py-8">
                       <Target className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                      <p className="text-gray-600 dark:text-gray-400">No player data available</p>
+                      <p className="text-gray-300">No player data available</p>
                     </div>
                   )}
                   
@@ -414,95 +411,14 @@ export default function BasketballDashboardPage() {
               </Card>
             </TabsContent>
 
+            {/* Teams Tab */}
+            <TabsContent value="teams" className="space-y-6">
+              {user && <TeamsList userId={user.id} />}
+            </TabsContent>
+
             {/* Favorites Tab */}
             <TabsContent value="favorites" className="space-y-6">
-              <Card className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-yellow-400/30">
-                <CardHeader>
-                  <CardTitle className="text-xl text-gray-900 dark:text-white">
-                    Favorite Teams
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {favoriteTeams.length > 0 ? (
-                    <div className="space-y-4">
-                      {favoriteTeams.map((team) => (
-                        <div key={team.id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center">
-                              <span className="text-black font-bold text-sm">
-                                {team.abbr}
-                              </span>
-                            </div>
-                            <div>
-                              <div className="font-semibold text-gray-900 dark:text-white">
-                                {team.team_name}
-                              </div>
-                              {team.conference && (
-                                <div className="text-sm text-gray-600 dark:text-gray-400">
-                                  {team.conference}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                          <Button variant="outline" size="sm" className="border-red-400 text-red-400 hover:bg-red-400 hover:text-white">
-                            Remove
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-8">
-                      <Star className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                      <p className="text-gray-600 dark:text-gray-400 mb-4">
-                        You haven&apos;t added any favorite teams yet.
-                      </p>
-                      <Button className="bg-yellow-400 hover:bg-yellow-500 text-black">
-                        Add Favorite Teams
-                      </Button>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-
-              {/* Favorite Team Games */}
-              {favoriteTeamGames.length > 0 && (
-                <Card className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-yellow-400/30">
-                  <CardHeader>
-                    <CardTitle className="text-xl text-gray-900 dark:text-white">
-                      Upcoming Favorite Team Games
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {favoriteTeamGames.map((game) => (
-                        <div key={game.game_id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                          <div className="flex items-center gap-3">
-                            <Calendar className="w-4 h-4 text-gray-500" />
-                            <span className="text-sm text-gray-900 dark:text-white">
-                              {new Date(game.game_date).toLocaleDateString()}
-                            </span>
-                          </div>
-                          <div className="text-sm text-gray-600 dark:text-gray-400">
-                            {game.home_team} vs {game.away_team}
-                          </div>
-                          <div className="flex gap-2">
-                            {game.is_favorite_home && (
-                              <Badge variant="outline" className="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200">
-                                Home
-                              </Badge>
-                            )}
-                            {game.is_favorite_away && (
-                              <Badge variant="outline" className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
-                                Away
-                              </Badge>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
+              {user && <FavoritesTab userId={user.id} />}
             </TabsContent>
           </Tabs>
         </div>
