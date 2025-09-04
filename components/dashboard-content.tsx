@@ -131,6 +131,48 @@ export default function DashboardContent({ user, profile }: DashboardContentProp
           </div>
         </div>
 
+        {/* Basketball Section */}
+        <div className="group relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-gray-900/95 to-black/95 group-hover:from-black/90 group-hover:via-gray-800/95 group-hover:to-black/90 transition-all duration-500 rounded-lg"></div>
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-yellow-400/10 via-yellow-400/20 to-yellow-400/10 transition-opacity duration-700 rounded-lg"></div>
+          
+          <div className="relative z-10 p-6 rounded-lg border-2 border-yellow-400/30 shadow-lg group-hover:border-yellow-400/60 transition-all duration-300">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-black text-yellow-400 uppercase tracking-wide pixelated-text group-hover:text-yellow-300 transition-colors duration-300">
+                🏀 Basketball
+              </h3>
+              <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
+                <span className="text-black font-bold text-sm">BB</span>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="p-4 bg-gray-800/50 rounded-lg border border-yellow-400/20">
+                <h4 className="text-yellow-300 font-semibold mb-2">Quick Access</h4>
+                <p className="text-yellow-100/80 text-sm mb-3">
+                  View games, player stats, and make picks
+                </p>
+                <a 
+                  href="/dashboard/basketball" 
+                  className="inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-4 py-2 rounded transition-colors duration-300"
+                >
+                  Go to Basketball
+                </a>
+              </div>
+              
+              <div className="p-4 bg-gray-800/50 rounded-lg border border-yellow-400/20">
+                <h4 className="text-yellow-300 font-semibold mb-2">Features</h4>
+                <ul className="text-yellow-100/80 text-sm space-y-1">
+                  <li>• Live game tracking</li>
+                  <li>• Player statistics</li>
+                  <li>• Parlay betting</li>
+                  <li>• Favorite teams</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* User Data Debug Card with athletic styling */}
         <div className="group relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-gray-900/95 to-black/95 group-hover:from-black/90 group-hover:via-gray-800/95 group-hover:to-black/90 transition-all duration-500 rounded-lg"></div>
