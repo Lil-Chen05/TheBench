@@ -9,16 +9,16 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "The Bench - Canadian University Sports Betting",
-  description: "Bet on Canadian university sports with competitive odds and exciting parlays. The ultimate platform for campus sports fantasy and betting.",
+  title: "The Bench - USports Basketball Statistics & Fantasy",
+  description: "Your gateway to USports basketball statistics in a fun and engaging way. Sports parlay creation and fantasy sports platform.",
   keywords: ["Canadian university sports", "sports betting", "fantasy sports", "basketball", "football", "hockey", "campus sports", "university betting", "The Bench"],
   authors: [{ name: "The Bench" }],
   creator: "The Bench",
   publisher: "The Bench",
   category: "Sports & Recreation",
   openGraph: {
-    title: "The Bench - Canadian University Sports Betting",
-    description: "Bet on Canadian university sports with competitive odds and exciting parlays. The ultimate platform for campus sports fantasy and betting.",
+    title: "The Bench - USports Basketball Statistics & Fantasy",
+    description: "Your gateway to USports basketball statistics in a fun and engaging way. Sports parlay creation and fantasy sports platform.",
     url: defaultUrl,
     siteName: "The Bench",
     images: [
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
         url: "/opengraph-image.png",
         width: 1200,
         height: 630,
-        alt: "The Bench - Canadian University Sports Betting",
+        alt: "The Bench - USports Basketball Statistics & Fantasy",
         type: "image/png",
       },
     ],
@@ -35,8 +35,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "The Bench - Canadian University Sports Betting",
-    description: "Bet on Canadian university sports with competitive odds and exciting parlays.",
+    title: "The Bench - USports Basketball Statistics & Fantasy",
+    description: "Your gateway to USports basketball statistics in a fun and engaging way. Sports parlay creation and fantasy sports platform.",
     images: ["/opengraph-image.png"],
     creator: "@thebench",
     site: "@thebench",

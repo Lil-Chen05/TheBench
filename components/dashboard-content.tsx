@@ -6,6 +6,8 @@ import TeamSportSelectionModal from "@/components/modals/team-sport-selection-mo
 import { useParlayCart } from "@/components/parlay/parlay-context";
 import type { User } from "@supabase/supabase-js";
 import { cn } from "@/lib/utils";
+import FavoriteTeamsDisplay from "@/components/dashboard/FavoriteTeamsDisplay";
+import FavoriteSportsDisplay from "@/components/dashboard/FavoriteSportsDisplay";
 
 interface UserProfile {
   id: string;
@@ -82,13 +84,20 @@ export default function DashboardContent({ user, profile }: DashboardContentProp
         {/* Stats Grid with athletic cards */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {/* Welcome Card */}
-          <div className="group relative overflow-hidden">
+          <div className="group relative overflow-hidden md:col-span-2 lg:col-span-1">
             <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-gray-900/95 to-black/95 group-hover:from-black/90 group-hover:via-gray-800/95 group-hover:to-black/90 transition-all duration-500 rounded-lg"></div>
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-yellow-400/10 via-yellow-400/20 to-yellow-400/10 transition-opacity duration-700 rounded-lg"></div>
             
-            <div className="relative z-10 p-6 rounded-lg border-2 border-yellow-400/30 shadow-lg group-hover:border-yellow-400/60 transition-all duration-300 group-hover:scale-105 h-full flex flex-col justify-between min-h-[120px]">
-              <h3 className="text-xl font-black text-yellow-400 mb-3 uppercase tracking-wide pixelated-text group-hover:text-yellow-300 transition-colors duration-300">Welcome Back!</h3>
-              <p className="text-yellow-300/80 text-sm font-semibold">Ready to make some championship picks?</p>
+            <div className="relative z-10 p-6 rounded-lg border-2 border-yellow-400/30 shadow-lg group-hover:border-yellow-400/60 transition-all duration-300 group-hover:scale-105 h-full flex flex-col justify-between min-h-[160px]">
+              <div>
+                <h3 className="text-xl font-black text-yellow-400 mb-3 uppercase tracking-wide pixelated-text group-hover:text-yellow-300 transition-colors duration-300">Welcome!</h3>
+                <p className="text-yellow-300/80 text-sm font-semibold mb-2">
+                  Your gateway to USports basketball statistics in a fun and engaging way.
+                </p>
+                <p className="text-yellow-300/70 text-xs">
+                  Sports parlay creation is our main focus, currently in development. We support men&apos;s basketball now, with plans to expand to women&apos;s basketball and other sports.
+                </p>
+              </div>
             </div>
           </div>
           
@@ -97,37 +106,27 @@ export default function DashboardContent({ user, profile }: DashboardContentProp
             <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-gray-900/95 to-black/95 group-hover:from-black/90 group-hover:via-gray-800/95 group-hover:to-black/90 transition-all duration-500 rounded-lg"></div>
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-yellow-400/10 via-yellow-400/20 to-yellow-400/10 transition-opacity duration-700 rounded-lg"></div>
             
-            <div className="relative z-10 p-6 rounded-lg border-2 border-yellow-400/30 shadow-lg group-hover:border-yellow-400/60 transition-all duration-300 group-hover:scale-105 h-full flex flex-col justify-between min-h-[120px]">
-              <h3 className="text-xl font-black text-yellow-400 mb-3 uppercase tracking-wide pixelated-text group-hover:text-yellow-300 transition-colors duration-300">Balance</h3>
-              <p className="text-yellow-400 text-2xl font-black group-hover:text-yellow-300 transition-colors duration-300">${currentProfile?.balance || 0}</p>
+            <div className="relative z-10 p-6 rounded-lg border-2 border-yellow-400/30 shadow-lg group-hover:border-yellow-400/60 transition-all duration-300 group-hover:scale-105 h-full flex flex-col justify-between min-h-[160px]">
+              <div>
+                <h3 className="text-xl font-black text-yellow-400 mb-3 uppercase tracking-wide pixelated-text group-hover:text-yellow-300 transition-colors duration-300">Balance</h3>
+                <p className="text-yellow-400 text-2xl font-black group-hover:text-yellow-300 transition-colors duration-300 mb-3">${currentProfile?.balance || 0}</p>
+              </div>
+              <button className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-4 py-2 rounded transition-colors duration-300 text-sm">
+                Add Credits
+              </button>
             </div>
           </div>
           
           {/* Favorite Teams Card */}
-          <div className="group relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-gray-900/95 to-black/95 group-hover:from-black/90 group-hover:via-gray-800/95 group-hover:to-black/90 transition-all duration-500 rounded-lg"></div>
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-yellow-400/10 via-yellow-400/20 to-yellow-400/10 transition-opacity duration-700 rounded-lg"></div>
-            
-            <div className="relative z-10 p-6 rounded-lg border-2 border-yellow-400/30 shadow-lg group-hover:border-yellow-400/60 transition-all duration-300 group-hover:scale-105 h-full flex flex-col justify-between min-h-[120px]">
-              <h3 className="text-xl font-black text-yellow-400 mb-3 uppercase tracking-wide pixelated-text group-hover:text-yellow-300 transition-colors duration-300">Your Teams</h3>
-              <p className="text-yellow-300/80 text-sm font-semibold">
-                {currentProfile?.favorite_teams?.length || 0} championship teams
-              </p>
-            </div>
-          </div>
+          <FavoriteTeamsDisplay 
+            userId={user.id}
+            favoriteTeamIds={currentProfile?.favorite_teams || []}
+          />
           
           {/* Favorite Sports Card */}
-          <div className="group relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-gray-900/95 to-black/95 group-hover:from-black/90 group-hover:via-gray-800/95 group-hover:to-black/90 transition-all duration-500 rounded-lg"></div>
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-yellow-400/10 via-yellow-400/20 to-yellow-400/10 transition-opacity duration-700 rounded-lg"></div>
-            
-            <div className="relative z-10 p-6 rounded-lg border-2 border-yellow-400/30 shadow-lg group-hover:border-yellow-400/60 transition-all duration-300 group-hover:scale-105 h-full flex flex-col justify-between min-h-[120px]">
-              <h3 className="text-xl font-black text-yellow-400 mb-3 uppercase tracking-wide pixelated-text group-hover:text-yellow-300 transition-colors duration-300">Your Sports</h3>
-              <p className="text-yellow-300/80 text-sm font-semibold">
-                {currentProfile?.favorite_sports?.length || 0} elite sports
-              </p>
-            </div>
-          </div>
+          <FavoriteSportsDisplay 
+            favoriteSports={currentProfile?.favorite_sports || []}
+          />
         </div>
 
         {/* Basketball Section */}
@@ -162,9 +161,9 @@ export default function DashboardContent({ user, profile }: DashboardContentProp
               <div className="p-4 bg-gray-800/50 rounded-lg border border-yellow-400/20">
                 <h4 className="text-yellow-300 font-semibold mb-2">Features</h4>
                 <ul className="text-yellow-100/80 text-sm space-y-1">
-                  <li>• Live game tracking</li>
+                  <li>• Game Results</li>
                   <li>• Player statistics</li>
-                  <li>• Parlay betting</li>
+                  <li>• Parlay odds</li>
                   <li>• Favorite teams</li>
                 </ul>
               </div>
@@ -172,18 +171,6 @@ export default function DashboardContent({ user, profile }: DashboardContentProp
           </div>
         </div>
 
-        {/* User Data Debug Card with athletic styling */}
-        <div className="group relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-gray-900/95 to-black/95 group-hover:from-black/90 group-hover:via-gray-800/95 group-hover:to-black/90 transition-all duration-500 rounded-lg"></div>
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-yellow-400/10 via-yellow-400/20 to-yellow-400/10 transition-opacity duration-700 rounded-lg"></div>
-          
-          <div className="relative z-10 p-6 rounded-lg border-2 border-yellow-400/30 shadow-lg group-hover:border-yellow-400/60 transition-all duration-300">
-            <h3 className="text-lg font-black text-yellow-400 mb-4 uppercase tracking-wide pixelated-text group-hover:text-yellow-300 transition-colors duration-300">Player Profile Data</h3>
-            <pre className="text-xs text-yellow-100 bg-black/30 p-4 rounded border border-yellow-400/20 max-h-32 overflow-auto font-mono">
-              {JSON.stringify(user, null, 2)}
-            </pre>
-          </div>
-        </div>
       </main>
 
       {showModal && (
