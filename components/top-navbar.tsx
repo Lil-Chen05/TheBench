@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ParlayCartBadge from "@/components/parlay/parlay-cart-badge";
 import { useState, useEffect } from "react";
-import { ChevronDown, Settings, LogOut, Loader2 } from "lucide-react";
+import { ChevronDown, Settings, LogOut, Loader2, Sun, Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import { User } from "@supabase/supabase-js";
@@ -12,6 +12,7 @@ export default function TopNavbar() {
   const pathname = usePathname();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
@@ -32,6 +33,27 @@ export default function TopNavbar() {
 
     return () => subscription.unsubscribe();
   }, [supabase]);
+
+  useEffect(() => {
+    // Check for saved theme preference or default to dark
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setIsDarkMode(savedTheme === 'dark');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = !isDarkMode;
+    setIsDarkMode(newTheme);
+    localStorage.setItem('theme', newTheme ? 'dark' : 'light');
+    
+    // Apply theme to document
+    if (newTheme) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
 
   const handleSignOut = () => {
     setShowSignOutConfirm(true);
@@ -97,6 +119,7 @@ export default function TopNavbar() {
             <div className="absolute inset-0 bg-gradient-to-r from-[#F4D03F] to-[#e6c200] opacity-90"></div>
           )}
         </Link>
+
         <Link 
           href="/contact" 
           className={cn(
@@ -113,9 +136,22 @@ export default function TopNavbar() {
         </Link>
       </div>
 
-      {/* Enhanced Cart and User Section */}
+      {/* Enhanced Cart, Theme Toggle, and User Section */}
       <div className="flex items-center gap-4">
         <ParlayCartBadge />
+        
+        {/* Theme Toggle Button */}
+        <button
+          onClick={toggleTheme}
+          className="p-2.5 rounded-lg bg-gray-800/60 hover:bg-gray-700/60 transition-all duration-200 border border-gray-700 hover:border-[#F4D03F]/50 hover:shadow-lg hover:shadow-gray-800/20 hover:scale-105 group"
+          title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+        >
+          {isDarkMode ? (
+            <Sun className="w-5 h-5 text-yellow-400 group-hover:text-yellow-300 transition-colors duration-200" />
+          ) : (
+            <Moon className="w-5 h-5 text-blue-400 group-hover:text-blue-300 transition-colors duration-200" />
+          )}
+        </button>
         
         {/* Enhanced User Dropdown */}
         <div className="relative">
@@ -204,4 +240,4 @@ export default function TopNavbar() {
       </div>
     </nav>
   );
-} 
+}
