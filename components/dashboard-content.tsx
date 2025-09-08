@@ -76,8 +76,10 @@ export default function DashboardContent({ user, profile }: DashboardContentProp
           {/* Glow effect on hover */}
           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-yellow-400/10 via-yellow-300/15 to-yellow-400/10 transition-opacity duration-700 rounded-xl"></div>
           
-          <div className="relative z-10 bg-black/10 backdrop-blur-sm text-yellow-400 text-3xl font-black p-6 rounded-xl border-2 border-yellow-400/40 shadow-2xl group-hover:shadow-xl transition-all duration-300 group-hover:scale-[1.02] group-hover:text-yellow-300">
-            <span className="pixelated-text uppercase tracking-wide drop-shadow-lg">Dashboard</span>
+          <div className="relative z-10 bg-black/10 backdrop-blur-sm text-yellow-400 text-3xl font-black p-6 rounded-xl border-2 border-yellow-400/40 shadow-2xl hover:shadow-xl transition-all duration-300 hover:text-yellow-300 overflow-hidden">
+            <span className="pixelated-text uppercase tracking-wide drop-shadow-lg inline-block transition-transform duration-300 hover:scale-105">
+            Dashboard
+            </span>
           </div>
         </div>
 
