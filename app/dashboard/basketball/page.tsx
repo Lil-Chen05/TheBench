@@ -21,7 +21,7 @@ import {
   TopPerformer, 
   BasketballTeam 
 } from "@/types/basketball";
-import GamesList from "@/components/basketball/GamesList";
+// import GamesList from "@/components/basketball/GamesList";
 import FavoritesTab from "@/components/basketball/FavoritesTab";
 import TeamsList from "@/components/basketball/TeamsList";
 import Link from "next/link";

@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, Search, RefreshCw, X, SortAsc, SortDesc } from 'lucide-react';
+import { Calendar, Search, RefreshCw, X } from 'lucide-react';
 import { GameWithTeams, Season } from '@/types/basketball';
 import { BasketballAPI } from '@/lib/basketball-api';
 import GameCard from './GameCard';

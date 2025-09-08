@@ -38,7 +38,7 @@ export default function PlayersList({
   const [searchTerm, setSearchTerm] = useState('');
   const [searchInput, setSearchInput] = useState(''); // Separate input state
   const [selectedTeamId, setSelectedTeamId] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<string>('name');
+  const [sortBy] = useState<string>('name');
   const [sortOrder, setSortOrder] = useState<string>('asc');
 
   const loadPlayers = useCallback(async (loadingType: 'initial' | 'search' | 'sort' | 'none' = 'none') => {

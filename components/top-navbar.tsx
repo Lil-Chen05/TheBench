@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ParlayCartBadge from "@/components/parlay/parlay-cart-badge";
 import { useState, useEffect } from "react";
-import { ChevronDown, Settings, LogOut, Loader2, Sun, Moon, User } from "lucide-react";
+import { ChevronDown, Settings, LogOut, Loader2, Sun, Moon} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import { User as SupabaseUser } from "@supabase/supabase-js";
