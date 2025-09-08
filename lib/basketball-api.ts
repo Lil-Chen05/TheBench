@@ -79,63 +79,95 @@ export class BasketballAPI {
     }
   }
 
-  // Get games with pagination
-  static async getGamesPaginated(
-    page: number = 1, 
-    pageSize: number = 20, 
-    seasonId?: number,
-    searchTerm?: string,
-    filterCompleted?: boolean | null
-  ): Promise<{ games: GameWithTeams[], totalCount: number, totalPages: number }> {
-    try {
-      const offset = (page - 1) * pageSize;
-      
-      let query = supabase
-        .from('games')
-        .select(`
-            *,
-            home_team:games_home_team_id_fkey(*),
-            away_team:games_away_team_id_fkey(*),
-            season:games_season_id_fkey(*)
-          `, { count: 'exact' })
-        .order('game_date', { ascending: false })
-        .range(offset, offset + pageSize - 1);
+// Get games with pagination
+static async getGamesPaginated(
+  page: number = 1, 
+  pageSize: number = 20, 
+  seasonId?: number,
+  searchTerm?: string,
+  filterCompleted?: boolean | null
+): Promise<{ games: GameWithTeams[], totalCount: number, totalPages: number }> {
+  try {
+    const offset = (page - 1) * pageSize;
+    
+    let query = supabase
+      .from('games')
+      .select(`
+          *,
+          home_team:games_home_team_id_fkey(*),
+          away_team:games_away_team_id_fkey(*),
+          season:games_season_id_fkey(*)
+        `, { count: 'exact' })
+      .order('game_date', { ascending: false })
+      .range(offset, offset + pageSize - 1);
 
-      // Apply filters
-      if (seasonId) {
-        query = query.eq('season_id', seasonId);
-      }
-
-      if (filterCompleted !== null) {
-        query = query.eq('is_completed', filterCompleted);
-      }
-
-      if (searchTerm && searchTerm.trim()) {
-        // Search in team names
-        query = query.or(`home_team.team_name.ilike.%${searchTerm}%,away_team.team_name.ilike.%${searchTerm}%`);
-      }
-
-      const { data, error, count } = await query;
-
-      if (error) throw error;
-
-      const totalCount = count || 0;
-      const totalPages = Math.ceil(totalCount / pageSize);
-
-      return {
-        games: data || [],
-        totalCount,
-        totalPages
-      };
-    } catch (error) {
-      console.error('Error fetching paginated games:', error);
-      return {
-        games: [],
-        totalCount: 0,
-        totalPages: 0
-      };
+    // Apply basic filters first
+    if (seasonId) {
+      query = query.eq('season_id', seasonId);
     }
+
+    if (filterCompleted !== null) {
+      query = query.eq('is_completed', filterCompleted);
+    }
+
+    // Handle search - find teams first, then filter games
+    if (searchTerm && searchTerm.trim()) {
+      // First, find teams that match the search term
+      const { data: matchingTeams, error: teamSearchError } = await supabase
+        .from('basketballteams')
+        .select('id')
+        .ilike('team_name', `%${searchTerm}%`);
+
+      if (teamSearchError) {
+        console.error('Error searching teams:', teamSearchError);
+        throw teamSearchError;
+      }
+
+      console.log('Matching teams found:', matchingTeams);
+
+      if (matchingTeams && matchingTeams.length > 0) {
+        const teamIds = matchingTeams.map(team => team.id);
+        console.log('Team IDs to search:', teamIds);
+        
+        // Use a different approach - filter by each team ID separately then combine
+        query = query.or(`home_team_id.in.(${teamIds.join(',')}),away_team_id.in.(${teamIds.join(',')})`);
+      } else {
+        // No teams found, return empty result
+        console.log('No teams found matching search term');
+        return {
+          games: [],
+          totalCount: 0,
+          totalPages: 0
+        };
+      }
+    }
+
+    console.log('🔍 Executing final query...');
+    const { data, error, count } = await query;
+
+    if (error) {
+      console.error("Supabase query error:", error);
+      throw error;  
+    }
+
+    const totalCount = count || 0;
+    const totalPages = Math.ceil(totalCount / pageSize);
+
+    return {
+      games: data || [],
+      totalCount,
+      totalPages
+    };
+  } catch (error) {
+    console.error('Error fetching paginated games:', error);
+    // Return empty result instead of throwing
+    return {
+      games: [],
+      totalCount: 0,
+      totalPages: 0
+    };
   }
+}
   
 
   // Get upcoming games
