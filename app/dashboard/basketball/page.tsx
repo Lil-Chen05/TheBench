@@ -157,13 +157,15 @@ export default function BasketballDashboardPage() {
         {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-5 bg-black/50 border border-yellow-400/30">
+            <TabsList className="grid w-full grid-cols-4 bg-black/50 border border-yellow-400/30">
               <TabsTrigger value="overview" className="data-[state=active]:bg-yellow-400 data-[state=active]:text-black">
                 Overview
               </TabsTrigger>
+          {/*}
               <TabsTrigger value="games" className="data-[state=active]:bg-yellow-400 data-[state=active]:text-black">
                 Games
               </TabsTrigger>
+            */}
               <TabsTrigger value="players" className="data-[state=active]:bg-yellow-400 data-[state=active]:text-black">
                 Players
               </TabsTrigger>
@@ -248,38 +250,89 @@ export default function BasketballDashboardPage() {
                 </Card>
               </div>
 
-              {/* Quick Actions */}
-              <Card className="bg-black border-yellow-400/30 border-yellow-400/30">
-                <CardHeader>
-                  <CardTitle className="text-xl text-white">
-                    Quick Actions
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <Link href="/dashboard/basketball/games">
-                      <Button className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold">
-                        <Calendar className="w-4 h-4 mr-2" />
-                        Browse Games
-                      </Button>
-                    </Link>
-                    
-                    <Link href="/dashboard/basketball/players">
-                      <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold">
-                        <Users className="w-4 h-4 mr-2" />
-                        View Players
-                      </Button>
-                    </Link>
-                    
-                    <Link href="/dashboard/basketball/standings">
-                      <Button className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold">
-                        <Trophy className="w-4 h-4 mr-2" />
-                        View Standings
-                      </Button>
-                    </Link>
+            {/* Quick Actions */}
+            <Card className="bg-gradient-to-br from-black/95 via-gray-900/90 to-black/95 border-2 border-yellow-400/50 shadow-2xl backdrop-blur-lg overflow-hidden relative">
+              {/* Animated background effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/10 via-transparent to-yellow-400/10 animate-pulse"></div>
+              
+              {/* Decorative corner elements */}
+              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-yellow-400/20 to-transparent"></div>
+              <div className="absolute bottom-0 left-0 w-20 h-20 bg-gradient-to-tr from-yellow-400/20 to-transparent"></div>
+              
+              <CardHeader className="relative z-10 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-3 bg-gradient-to-br from-yellow-400 to-yellow-300 rounded-xl shadow-lg">
+                    <Trophy className="w-6 h-6 text-black" />
                   </div>
-                </CardContent>
-              </Card>
+                  <div>
+                    <CardTitle className="text-2xl font-bold text-white tracking-wide">
+                      Canadian University MBB
+                    </CardTitle>
+                    <p className="text-yellow-400/80 text-sm font-medium">
+                      Complete Basketball Database
+                    </p>
+                  </div>
+                </div>
+              </CardHeader>
+              
+              <CardContent className="relative z-10 pt-2">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* Browse Games Button */}
+                  <Link href="/dashboard/basketball/games">
+                    <Button className="w-full h-16 bg-gradient-to-r from-yellow-400 to-yellow-300 hover:from-yellow-300 hover:to-yellow-200 text-black font-bold text-lg transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-yellow-400/40 rounded-xl border-2 border-yellow-400/60 hover:border-yellow-300 relative overflow-hidden group">
+                      {/* Button glow effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-yellow-300/20 to-yellow-200/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      
+                      <div className="relative z-10 flex items-center justify-center gap-3">
+                        <div className="p-2 bg-black/20 rounded-lg">
+                          <Calendar className="w-5 h-5" />
+                        </div>
+                        <div className="text-left">
+                          <div className="font-black">Browse Games</div>
+                          <div className="text-xs opacity-80">View all matches</div>
+                        </div>
+                      </div>
+                    </Button>
+                  </Link>
+                  
+                  {/* View Players Button */}
+                  <Link href="/dashboard/basketball/players">
+                    <Button className="w-full h-16 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold text-lg transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-blue-500/40 rounded-xl border-2 border-blue-500/60 hover:border-blue-400 relative overflow-hidden group">
+                      {/* Button glow effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-blue-300/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      
+                      <div className="relative z-10 flex items-center justify-center gap-3">
+                        <div className="p-2 bg-white/20 rounded-lg">
+                          <Users className="w-5 h-5" />
+                        </div>
+                        <div className="text-left">
+                          <div className="font-black">View Players</div>
+                          <div className="text-xs opacity-80">Player database</div>
+                        </div>
+                      </div>
+                    </Button>
+                  </Link>
+                  
+                  {/* View Standings Button */}
+                  <Link href="/dashboard/basketball/standings">
+                    <Button className="w-full h-16 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 text-white font-bold text-lg transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-purple-500/40 rounded-xl border-2 border-purple-500/60 hover:border-purple-400 relative overflow-hidden group">
+                      {/* Button glow effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 to-purple-300/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      
+                      <div className="relative z-10 flex items-center justify-center gap-3">
+                        <div className="p-2 bg-white/20 rounded-lg">
+                          <Trophy className="w-5 h-5" />
+                        </div>
+                        <div className="text-left">
+                          <div className="font-black">View Standings</div>
+                          <div className="text-xs opacity-80">Team rankings</div>
+                        </div>
+                      </div>
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
 
               {/* Upcoming Games Preview */}
               {upcomingGames.length > 0 && (
@@ -322,14 +375,16 @@ export default function BasketballDashboardPage() {
               )}
             </TabsContent>
 
-            {/* Games Tab */}
-            <TabsContent value="games" className="space-y-6">
-              <GamesList 
-                title="Basketball Games" 
-                showFilters={true} 
+
+          {/* Games Tab 
+          <TabsContent value="games" className="space-y-6">
+            <GamesList
+              title="Basketball Games"
+              showFilters={true}
                 gamesPerPage={20}
               />
             </TabsContent>
+          */}
 
             {/* Players Tab */}
             <TabsContent value="players" className="space-y-6">
