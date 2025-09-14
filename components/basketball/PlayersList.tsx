@@ -7,7 +7,6 @@ import { RefreshCw, AlertCircle, Search, X, SortAsc, SortDesc } from 'lucide-rea
 import { PlayerWithTeam, BasketballTeam } from '@/types/basketball';
 import { BasketballAPI } from '@/lib/basketball-api';
 import PlayerCard from './PlayerCard';
-import PlayerDetailsModal from './PlayerDetailsModal';
 import Pagination from '@/components/ui/pagination';
 
 interface PlayersListProps {
