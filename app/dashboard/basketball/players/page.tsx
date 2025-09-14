@@ -7,11 +7,16 @@ import { Trophy, ArrowLeft, Users } from "lucide-react";
 import { User } from "@supabase/supabase-js";
 import { PlayerWithTeam } from "@/types/basketball";
 import PlayersList from "@/components/basketball/PlayersList";
+import PlayerDetailsModal from "@/components/basketball/PlayerDetailsModal"; // Add this import
 import Link from "next/link";
 
 export default function BasketballPlayersPage() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  
+  // Modal state - Add these
+  const [selectedPlayer, setSelectedPlayer] = useState<PlayerWithTeam | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   const supabase = createClient();
 
@@ -48,10 +53,17 @@ export default function BasketballPlayersPage() {
     return () => subscription.unsubscribe();
   }, [supabase]);
 
+  // Updated handlePlayerClick to open modal
   const handlePlayerClick = (player: PlayerWithTeam) => {
-    // For now, just log the player. In the future, this could navigate to a player details page
     console.log('Player selected:', player);
-    // Could implement: router.push(`/dashboard/basketball/players/${player.id}`);
+    setSelectedPlayer(player);
+    setIsModalOpen(true);
+  };
+
+  // Handle modal close
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedPlayer(null);
   };
 
   if (loading) {
@@ -132,6 +144,15 @@ export default function BasketballPlayersPage() {
           />
         </div>
       </div>
+
+      {/* Player Details Modal - Add this */}
+      {selectedPlayer && (
+        <PlayerDetailsModal
+          player={selectedPlayer}
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+        />
+      )}
     </div>
   );
 }

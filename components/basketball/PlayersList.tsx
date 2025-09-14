@@ -7,6 +7,7 @@ import { RefreshCw, AlertCircle, Search, X, SortAsc, SortDesc } from 'lucide-rea
 import { PlayerWithTeam, BasketballTeam } from '@/types/basketball';
 import { BasketballAPI } from '@/lib/basketball-api';
 import PlayerCard from './PlayerCard';
+import PlayerDetailsModal from './PlayerDetailsModal';
 import Pagination from '@/components/ui/pagination';
 
 interface PlayersListProps {
@@ -136,6 +137,12 @@ export default function PlayersList({
     setCurrentPage(page);
   };
 
+  // Updated handlePlayerClick to open modal
+  const handlePlayerClick = (player: PlayerWithTeam) => {
+    if (onPlayerClick) {
+      onPlayerClick(player);
+    }
+  };
   // Load initial data
   useEffect(() => {
     loadInitialData();
@@ -164,15 +171,6 @@ export default function PlayersList({
 
   const handleRefresh = () => {
     loadPlayers('search');
-  };
-
-  const handlePlayerClick = (player: PlayerWithTeam) => {
-    if (onPlayerClick) {
-      onPlayerClick(player);
-    } else {
-      // Default behavior - could navigate to player details page
-      console.log('Player clicked:', player);
-    }
   };
 
   const getFilteredPlayersCount = () => {
