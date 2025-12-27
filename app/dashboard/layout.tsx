@@ -13,7 +13,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const noNavbarPages = [
     '/dashboard/basketball',
     '/dashboard/basketball/games',
-    '/dashboard/basketball/players'
+    '/dashboard/basketball/players',
+    '/dashboard/landingpage'
   ];
   
   const shouldShowNavbar = !noNavbarPages.some(page => pathname.startsWith(page));
