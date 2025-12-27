@@ -106,7 +106,6 @@
 .pixelated-text {
   font-family: 'Press Start 2P', 'Geist', 'monospace';
   letter-spacing: 0.05em;
-  text-shadow: 2px 2px 0 #000, 4px 4px 0 #F4D03F;
 }
 
 /* Pixelated background styling */

@@ -5,6 +5,9 @@ import { createClient } from "@/lib/supabase/client";
 import DashboardContent from "@/components/dashboard-content";
 import { getUserProfile } from "@/lib/database/profiles-client";
 import { User } from "@supabase/supabase-js";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 interface UserProfile {
   id: string;
@@ -116,13 +119,38 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-cover bg-center bg-no-repeat relative" style={{backgroundImage: "url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2193&q=80')"}}>
+    <div className="min-h-screen bg-cover bg-center bg-no-repeat relative" >
       {/* Dark overlay for better readability */}
       <div className="absolute inset-0 bg-black/30"></div>
       
       {/* Dashboard content with backdrop blur */}
-      <div className="relative z-10 backdrop-blur-sm">
+      <div className="relative z-10">
         <DashboardContent user={user} profile={profile} />
+        
+        {/* Back to Landing Page Button - with matching background */}
+        <div className="backdrop-blur-sm bg-black/10 py-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-center gap-4">
+              <Link href="/dashboard/landingpage">
+                <Button 
+                  variant="default" 
+                  size="lg"
+                  className="bg-gradient-to-r from-yellow-400 to-yellow-300 text-black hover:from-yellow-300 hover:to-yellow-200 font-bold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-yellow-400/50 group"
+                >
+                  <ArrowLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform duration-300" />
+                  View Landing Page
+                </Button>
+              </Link>
+            </div>
+            
+            {/* Optional: Add a divider or footer text */}
+            <div className="mt-8 text-center">
+              <p className="text-gray-300 text-sm backdrop-blur-sm bg-black/20 inline-block px-4 py-2 rounded-lg">
+                Ready to explore more? Check out our landing page for the latest updates and features.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
