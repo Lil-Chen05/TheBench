@@ -8,7 +8,6 @@ import AccountInformation from "@/components/account/account-information";
 import AccountSettings from "@/components/account/account-settings";
 import BalancePanel from "@/components/account/balance-panel";
 import TopNavbar from "@/components/top-navbar";
-import Sidebar from "@/components/sidebar";
 import { ParlayCartProvider } from "@/components/parlay/parlay-context";
 import { ToastProvider } from "@/components/ui/toast";
 import ParlayCart from "@/components/parlay/parlay-cart";
@@ -90,15 +89,12 @@ export default function AccountPage() {
     <ToastProvider>
       <ParlayCartProvider>
         <div className="flex h-screen bg-black text-white">
-          {/* Left Sidebar Navigation */}
-          <Sidebar active="dashboard" />
-          
           <div className="flex-1 flex flex-col">
             {/* Top Navigation Bar */}
             <TopNavbar />
             
             {/* Main Content Area */}
-            <main className="flex-1 overflow-auto ml-[50px] mt-[60px]">
+            <main className="flex-1 overflow-auto mt-[60px]">
               <div className="max-w-7xl mx-auto px-4 py-8 pb-24 md:pb-8">
                 {/* Full-width welcome section */}
                 <WelcomeHeader user={user} />

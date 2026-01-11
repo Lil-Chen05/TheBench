@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -50,8 +49,7 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="bg-gradient-to-br from-gray-900 to-black border-2 border-yellow-400/30 shadow-2xl hover:border-yellow-400/60 transition-all duration-300">
         <CardHeader>
-          <CardTitle className="text-3xl font-black text-yellow-400 pixelated-text uppercase tracking-wide">Gear Up</CardTitle>
-          <CardDescription className="text-base text-yellow-300/80 font-semibold">Enter your credentials to access the bench</CardDescription>
+          <CardTitle className="text-3xl font-black text-yellow-400 pixelated-text uppercase tracking-wide">Login</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin}>

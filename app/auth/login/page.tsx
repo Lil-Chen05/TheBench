@@ -2,7 +2,7 @@ import { LoginForm } from "@/components/login-form";
 
 export default function Page() {
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10 bg-cover bg-center bg-no-repeat relative" style={{backgroundImage: "url('https://mcgillathletics.ca/images/2024/6/7/hock_m_Picard-Hooper_crop_CIS_2012_WEST-McG_GM7b_Brian_Smith.jpg?width=1884&quality=80&format=jpg)"}}>
+    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10 bg-cover bg-center bg-no-repeat relative pixelated-bg" style={{backgroundImage: "url('https://mcgillathletics.ca/images/2024/6/7/hock_m_Picard-Hooper_crop_CIS_2012_WEST-McG_GM7b_Brian_Smith.jpg?width=1884&quality=80&format=jpg')"}}>
       {/* Dark overlay for better readability */}
       <div className="absolute inset-0 bg-black/40"></div>
       

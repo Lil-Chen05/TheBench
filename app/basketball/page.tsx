@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import TopNavbar from "@/components/top-navbar";
-import Sidebar from "@/components/sidebar";
 import PopularPicks from "@/components/basketball/popular-picks";
 import FavoritePicks from "@/components/basketball/favorite-picks";
 import { ParlayCartProvider, useParlayCart } from "@/components/parlay/parlay-context";
@@ -79,10 +78,9 @@ function BasketballContent() {
   return (
     <div className="min-h-screen bg-white">
       <TopNavbar />
-      <Sidebar active="basketball" />
       <main 
         className={cn(
-          "ml-[50px] mt-[60px] flex flex-col gap-12 p-10 transition-all duration-300 ease-in-out",
+          "mt-[60px] flex flex-col gap-12 p-10 transition-all duration-300 ease-in-out",
           isDashboardShrunk 
             ? "mr-[400px] lg:mr-[450px] xl:mr-[500px]" 
             : "mr-0"

@@ -195,3 +195,50 @@ BEGIN
   LIMIT p_limit;
 END;
 $$ LANGUAGE plpgsql;
+
+-- New function: get_players_with_team_info
+CREATE OR REPLACE FUNCTION get_players_with_team_info(
+  p_team_id integer DEFAULT NULL,
+  p_sort_by text DEFAULT 'name', -- 'name', 'jersey_number', 'team_name'
+  p_sort_order text DEFAULT 'asc', -- 'asc', 'desc'
+  p_limit integer DEFAULT 50,
+  p_offset integer DEFAULT 0
+)
+RETURNS TABLE(
+  player_id integer,
+  player_name text,
+  jersey_number integer,
+  team_id integer,
+  team_name text,
+  team_abbr text,
+  city text,
+  province text,
+  is_active boolean
+) AS $$
+BEGIN
+  RETURN QUERY
+  SELECT 
+    p.id as player_id,
+    p.name as player_name,
+    p.jersey_number,
+    p.team_id,
+    bt.team_name,
+    bt.abbr as team_abbr,
+    bt.city,
+    bt.province,
+    p.is_active
+  FROM public.players p
+  JOIN public.basketballteams bt ON p.team_id = bt.id
+  WHERE p.is_active = true
+    AND (p_team_id IS NULL OR p.team_id = p_team_id)
+  ORDER BY 
+    CASE WHEN p_sort_by = 'name' AND p_sort_order = 'asc' THEN p.name END ASC,
+    CASE WHEN p_sort_by = 'name' AND p_sort_order = 'desc' THEN p.name END DESC,
+    CASE WHEN p_sort_by = 'jersey_number' AND p_sort_order = 'asc' THEN p.jersey_number END ASC,
+    CASE WHEN p_sort_by = 'jersey_number' AND p_sort_order = 'desc' THEN p.jersey_number END DESC,
+    CASE WHEN p_sort_by = 'team_name' AND p_sort_order = 'asc' THEN bt.team_name END ASC,
+    CASE WHEN p_sort_by = 'team_name' AND p_sort_order = 'desc' THEN bt.team_name END DESC
+  LIMIT p_limit
+  OFFSET p_offset;
+END;
+$$ LANGUAGE plpgsql;

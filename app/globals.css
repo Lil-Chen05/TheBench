@@ -106,5 +106,32 @@
 .pixelated-text {
   font-family: 'Press Start 2P', 'Geist', 'monospace';
   letter-spacing: 0.05em;
-  text-shadow: 2px 2px 0 #000, 4px 4px 0 #F4D03F;
+}
+
+/* Pixelated background styling */
+.pixelated-bg {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: -o-crisp-edges;
+}
+
+/* Optional: Add some retro scanline effect */
+.pixelated-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.1) 2px,
+    rgba(0, 0, 0, 0.1) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
 }

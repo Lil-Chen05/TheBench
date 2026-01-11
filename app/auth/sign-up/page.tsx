@@ -2,7 +2,7 @@ import { SignUpForm } from "@/components/sign-up-form";
 
 export default function Page() {
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10 bg-cover bg-center bg-no-repeat relative" style={{backgroundImage: "url('https://images.sidearmdev.com/convert?url=https%3a%2f%2fdxbhsrqyrr690.cloudfront.net%2fsidearm.nextgen.sites%2fmcgill.sidearmsports.com%2fimages%2f2022%2f3%2f10%2fBball_M_Whyne_Quarry_McG_UQAM_F_17_22_33.jpg&type=webp')"}}>
+    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10 bg-cover bg-center bg-no-repeat relative pixelated-bg" style={{backgroundImage: "url('https://images.sidearmdev.com/convert?url=https%3a%2f%2fdxbhsrqyrr690.cloudfront.net%2fsidearm.nextgen.sites%2fmcgill.sidearmsports.com%2fimages%2f2022%2f3%2f10%2fBball_M_Whyne_Quarry_McG_UQAM_F_17_22_33.jpg&type=webp')"}}>
       {/* Dark overlay for better readability */}
       <div className="absolute inset-0 bg-black/40"></div>
       
