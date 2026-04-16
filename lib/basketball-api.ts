@@ -13,13 +13,14 @@ import {
   FavoriteTeamGame
 } from '@/types/basketball';
 
-const supabase = createClient();
-
 export class BasketballAPI {
+  private static getClient() {
+    return createClient();
+  }
   // Get all basketball teams
   static async getTeams(): Promise<BasketballTeam[]> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await BasketballAPI.getClient()
         .from('basketballteams')
         .select('*')
         .eq('is_active', true)
@@ -36,7 +37,7 @@ export class BasketballAPI {
   // Get all seasons
   static async getSeasons(): Promise<Season[]> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await BasketballAPI.getClient()
         .from('seasons')
         .select('*')
         .eq('sport_id', 1) // Basketball sport ID
@@ -53,7 +54,7 @@ export class BasketballAPI {
   // Get games with team information
   static async getGames(seasonId?: number, limit: number = 50): Promise<GameWithTeams[]> {
     try {
-      let query = supabase
+      let query = BasketballAPI.getClient()
         .from('games')
         .select(`
             *,
@@ -87,7 +88,7 @@ export class BasketballAPI {
     limit: number = 100
   ): Promise<GameWithTeams[]> {
     try {
-      let query = supabase
+      let query = BasketballAPI.getClient()
         .from('games')
         .select(`
           *,
@@ -120,7 +121,7 @@ export class BasketballAPI {
     seasonId?: number
   ): Promise<GameWithTeams[]> {
     try {
-      let query = supabase
+      let query = BasketballAPI.getClient()
         .from('games')
         .select(`
           *,
@@ -153,7 +154,7 @@ export class BasketballAPI {
         .toISOString()
         .split('T')[0];
   
-      const { data, error } = await supabase
+      const { data, error } = await BasketballAPI.getClient()
         .from('games')
         .select(`
             *,
@@ -179,7 +180,7 @@ export class BasketballAPI {
   // Get players by team
   static async getPlayersByTeam(teamId: number): Promise<PlayerWithTeam[]> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await BasketballAPI.getClient()
         .from('players')
         .select(`
           *,
@@ -200,7 +201,7 @@ export class BasketballAPI {
   // Get player stats for a specific game
   static async getPlayerGameStats(gameId: number): Promise<PlayerStatsWithGame[]> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await BasketballAPI.getClient()
         .from('player_game_stats')
         .select(`
           *,
@@ -221,7 +222,7 @@ export class BasketballAPI {
   // Get player props for a game
   static async getPlayerProps(gameId: number): Promise<PlayerProp[]> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await BasketballAPI.getClient()
         .from('player_props')
         .select('*')
         .eq('game_id', gameId)
@@ -238,7 +239,7 @@ export class BasketballAPI {
   // Get popular picks for a game using database function
   static async getPopularPicksForGame(gameId: number, limit: number = 10): Promise<PopularPick[]> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await BasketballAPI.getClient()
         .rpc('get_popular_picks_for_game', {
           p_game_id: gameId,
           p_limit: limit
@@ -259,7 +260,7 @@ export class BasketballAPI {
     gamesCount: number = 5
   ): Promise<PlayerLastNGames[]> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await BasketballAPI.getClient()
         .rpc('get_player_last_n_games', {
           p_player_id: playerId,
           p_stat_type: statType,
@@ -280,7 +281,7 @@ export class BasketballAPI {
     seasonName?: string
   ): Promise<PlayerSeasonAverages[]> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await BasketballAPI.getClient()
         .rpc('get_player_season_averages', {
           p_player_id: playerId,
           p_season_name: seasonName
@@ -301,7 +302,7 @@ export class BasketballAPI {
     limit: number = 10
   ): Promise<TopPerformer[]> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await BasketballAPI.getClient()
         .rpc('get_top_performers', {
           p_stat_type: statType,
           p_season_name: seasonName,
@@ -322,7 +323,7 @@ export class BasketballAPI {
     daysAhead: number = 7
   ): Promise<FavoriteTeamGame[]> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await BasketballAPI.getClient()
         .rpc('get_favorite_team_games', {
           p_user_id: userId,
           p_days_ahead: daysAhead
@@ -336,21 +337,29 @@ export class BasketballAPI {
     }
   }
 
-  // Get user's favorite teams
+  // Get user's favorite teams (reads from profiles.favorite_teams JSONB)
   static async getUserFavoriteTeams(userId: string): Promise<BasketballTeam[]> {
     try {
-      const { data, error } = await supabase
-        .from('user_favorite_teams')
-        .select(`
-          team_id,
-          basketballteams(*)
-        `)
-        .eq('user_id', userId)
-        .eq('sport_id', 1);
+      // Get team IDs from the user's profile
+      const { data: profile, error: profileError } = await BasketballAPI.getClient()
+        .from('profiles')
+        .select('favorite_teams')
+        .eq('id', userId)
+        .single();
+
+      if (profileError || !profile?.favorite_teams?.length) return [];
+
+      // Fetch the actual team records for those IDs
+      const teamIds = profile.favorite_teams.map((id: string) => parseInt(id, 10)).filter((id: number) => !isNaN(id));
+      if (teamIds.length === 0) return [];
+
+      const { data, error } = await BasketballAPI.getClient()
+        .from('basketballteams')
+        .select('*')
+        .in('id', teamIds);
 
       if (error) throw error;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return data?.map((item: any) => item.basketballteams).filter(Boolean) || [];
+      return data || [];
     } catch (error) {
       console.error('Error fetching user favorite teams:', error);
       return [];
@@ -358,9 +367,10 @@ export class BasketballAPI {
   }
 
   // NEW: Get games using optimized view
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static async getGamesFromView(seasonId?: number, limit: number = 50): Promise<any[]> {
     try {
-      let query = supabase
+      let query = BasketballAPI.getClient()
         .from('active_games_view')
         .select('*')
         .order('game_date', { ascending: false })
@@ -380,9 +390,10 @@ export class BasketballAPI {
   }
 
   // NEW: Get player performance using optimized view
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static async getPlayerPerformanceFromView(seasonName?: string, limit: number = 20): Promise<any[]> {
     try {
-      let query = supabase
+      let query = BasketballAPI.getClient()
         .from('player_performance_view')
         .select('*')
         .order('avg_points', { ascending: false })
@@ -402,9 +413,10 @@ export class BasketballAPI {
   }
 
   // NEW: Get popular picks using optimized view
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static async getPopularPicksFromView(limit: number = 20): Promise<any[]> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await BasketballAPI.getClient()
         .from('popular_picks_view')
         .select('*')
         .order('total_picks', { ascending: false })
@@ -419,9 +431,10 @@ export class BasketballAPI {
   }
 
   // NEW: Get team performance using optimized view
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static async getTeamPerformanceFromView(seasonName?: string): Promise<any[]> {
     try {
-      let query = supabase
+      let query = BasketballAPI.getClient()
         .from('team_performance_view')
         .select('*')
         .order('avg_team_points', { ascending: false });
@@ -440,9 +453,10 @@ export class BasketballAPI {
   }
 
   // NEW: Get user dashboard summary using optimized view
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static async getUserDashboardSummary(userId: string): Promise<any> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await BasketballAPI.getClient()
         .from('user_dashboard_view')
         .select('*')
         .eq('user_id', userId)
@@ -459,7 +473,7 @@ export class BasketballAPI {
   // Add a team to user's favorites
   static async addFavoriteTeam(userId: string, teamId: number): Promise<boolean> {
     try {
-      const { error } = await supabase
+      const { error } = await BasketballAPI.getClient()
         .from('user_favorite_teams')
         .insert({
           user_id: userId,
@@ -478,7 +492,7 @@ export class BasketballAPI {
   // Remove a team from user's favorites
   static async removeFavoriteTeam(userId: string, teamId: number): Promise<boolean> {
     try {
-      const { error } = await supabase
+      const { error } = await BasketballAPI.getClient()
         .from('user_favorite_teams')
         .delete()
         .eq('user_id', userId)
@@ -495,7 +509,7 @@ export class BasketballAPI {
   // Search players by name
   static async searchPlayers(searchTerm: string, limit: number = 20): Promise<PlayerWithTeam[]> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await BasketballAPI.getClient()
         .from('players')
         .select(`
           *,
