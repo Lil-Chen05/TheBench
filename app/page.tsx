@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ThemeSwitcher } from "@/components/theme-switcher";
 import { AuthButton } from "@/components/auth-button";
 import { Trophy, ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -40,9 +39,6 @@ export default function Home() {
             THE BENCH
           </div>
           <div className="flex items-center gap-4">
-            <div className="hidden md:block">
-              <ThemeSwitcher />
-            </div>
           </div>
         </div>
       </nav>
@@ -127,7 +123,6 @@ export default function Home() {
             Supabase
           </a>
         </p>
-        <ThemeSwitcher />
       </footer>
     </main>
   );

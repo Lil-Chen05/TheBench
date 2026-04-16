@@ -40,3 +40,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+DataPipeline/basketball_data_rolled.csv
+DataPipeline/basketball_data_rolled_with_identity.csv

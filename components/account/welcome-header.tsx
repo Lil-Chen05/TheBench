@@ -7,23 +7,26 @@ interface WelcomeHeaderProps {
 }
 
 export default function WelcomeHeader({ user, profile }: WelcomeHeaderProps) {
-  // Format the member since date if profile is provided
-  const memberSince = profile ? new Date(profile.created_at).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  }) : null;
+  const memberSince = profile
+    ? new Date(profile.created_at).toLocaleDateString(undefined, {
+        month: "long",
+        year: "numeric",
+      })
+    : null;
 
   return (
-    <div className="text-center space-y-2">
-      <h1 className="text-3xl font-bold text-white">
-        Welcome back, {user.email}
+    <div>
+      <p className="text-gray-500 text-xs font-semibold uppercase tracking-widest">
+        Account
+      </p>
+      <h1 className="text-2xl sm:text-3xl font-bold text-white mt-1 tracking-tight truncate">
+        {user.email}
       </h1>
       {memberSince && (
-        <p className="text-gray-400 text-sm">
+        <p className="text-gray-400 text-sm mt-1">
           Member since {memberSince}
         </p>
       )}
     </div>
   );
-} 
+}
