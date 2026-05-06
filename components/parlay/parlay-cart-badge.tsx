@@ -20,7 +20,7 @@ export default function ParlayCartBadge() {
       variant="ghost"
       size="sm"
       className={cn(
-        "relative text-white hover:bg-gray-700/60 transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-800/20",
+        "lg:hidden relative text-white hover:bg-gray-700/60 transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-gray-800/20",
         "px-3 py-2 rounded-lg border border-transparent hover:border-gray-700"
       )}
     >

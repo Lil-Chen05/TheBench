@@ -5,6 +5,7 @@ export interface UserProfile {
   favorite_teams: string[];
   favorite_sports: string[];
   balance: number;
+  is_admin: boolean;
   created_at: string;
   updated_at: string;
 }
